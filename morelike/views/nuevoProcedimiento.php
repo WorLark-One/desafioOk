@@ -28,10 +28,10 @@
 		</div>
 		<div class="row">
 			<div class="col-6">
-				<button class="btn btn-success" style="width: 100%; margin-top: 10px;" onclick="guardarNuevoProcedimientos()">Guardar <i class="far fa-save"></i></button>
+				<button class="btn btn-success" style="width: 100%; margin-top: 10px;" onclick="guardarNuevoProcedimiento()">Guardar <i class="far fa-save"></i></button>
 			</div>
 			<div class="col-6">
-				<button class="btn btn-warning" style="width: 100%; margin-top: 10px;" onclick="verVusquedas()" id="verBusquedas">Buscar <i class="fas fa-search-plus"></i></button>
+				<button class="btn btn-warning" style="width: 100%; margin-top: 10px;" onclick="verBusquedas()" id="verBusquedas">Buscar <i class="fas fa-search-plus"></i></button>
 				<button class="btn btn-warning" id="ocultarBusquedas" style="display:none; width: 100%; margin-top: 10px;" onclick="ocultarBusquedas()">Buscar <i class="fas fa-search-plus"></i></button>
 			</div>
 		</div>
@@ -55,10 +55,10 @@
 				<th>Saldo</th>
 				<?php foreach($data as $row):?>
 				<tr>
-					<td><?php =substr($row->fecha,0,10)?></td>
-					<td><?php =$row->descripcion?></td>
-					<td><?php =number_format($row->ingreso,0,",",".")?></td>
-					<td><?php =number_format($row->egreso,0,",",".")?></td>
+					<td><?=substr($row->fecha,0,10)?></td>
+					<td><?=$row->descripcion?></td>
+					<td><?=number_format($row->ingreso,0,",",".")?></td>
+					<td><?=number_format($row->egreso,0,",",".")?></td>
 					<?php if($row->saldo>0):?>
 					<td class="btn-success"><?=number_format($row->saldo,0,",",".")?></td>
 					<?php else:?>

@@ -146,28 +146,28 @@
 <div class="modal fade btn-danger" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
     <h5 class="modal-title text-center" id="exampleModalLabel1">Problemas de Seguridad!</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-     	<span aria-hidden="true">&times;</span>
+		<span aria-hidden="true">&times;</span>
     </button>
-  	<div class="modal-body text-center">
-      	<p>Por problemas de seguridad su cuenta será cerrada.</p>
-  	</div>
+	<div class="modal-body text-center">
+		<p>Por problemas de seguridad su cuenta será cerrada.</p>
+</div>
 </div>
 <!-- Modal -->
 <div class="modal fade btn-success" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
     <h5 class="modal-title text-center" id="exampleModalLabel3">Cambio de Clave</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-     	<span aria-hidden="true">&times;</span>
+		<span aria-hidden="true">&times;</span>
     </button>
-  	<div class="modal-body text-center">
-      	<p>Su clave fue modificada con éxito, por favor reingrese.</p>
-  	</div>
+	<div class="modal-body text-center">
+		<p>Su clave fue modificada con éxito, por favor reingrese.</p>
+	</div>
 </div>
 <style type="text/css">
 	.dropdown-menu {
-	 	position:relative;
-	  	width:100%;
-	  	top: 0px !important;
-    	left: 0px !important;
+		position:relative;
+		width:100%;
+		top: 0px !important;
+		left: 0px !important;
     }
 </style>
 <script charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
@@ -177,10 +177,9 @@
 	$(document).ready(function(){
 		});
 	function nuevoProcedimiento(){
-		$.post(base_url+"/nuevoProcedimiento",{},function(html,data){$("#contenedor").html(html,data); $("#contenedor").show("fast"); 
+		$.post(base_url+"Principal/nuevoProcedimiento",{},function(html,data){$("#contenedor").html(html,data); $("#contenedor").show("fast"); 
 			$("#rutPacienteBusqueda").focus();
 			//$('html, body').animate({ scrollTop: $("#rutPacienteBusqueda").offset().top }, 500);
-
 		});
 	}
 	function nuevaArea(){
