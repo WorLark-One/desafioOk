@@ -46,6 +46,8 @@
 			<th>Estado</th>
 			<th></th>
 			<th></th>
+			<th></th>
+			<!-- <th></th> -->
 			<?php foreach($users as $row):?>
 				<tr>
 					<td><input class="form-control" type="text" id="rutEditado<?=$row->id?>" value="<?=$row->rut?>"></td>
