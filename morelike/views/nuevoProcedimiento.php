@@ -66,7 +66,7 @@
 						<input type="text" class="form-control" onkeyup="separador(this)" id="ingreso<?=$row->id?>" value="<?=number_format($row->ingreso,0,",",".")?>"/>
 					</td>
 					<td>
-						<input type="number" class="form-control" onkeyup="separador(this)" id="egreso<?=$row->id?>" value="<?=number_format($row->egreso,0,",",".")?>"/>
+						<input type="text" class="form-control" onkeyup="separador(this)" id="egreso<?=$row->id?>" value="<?=number_format($row->egreso,0,",",".")?>"/>
 					</td>
 					<?php if($row->saldo>0):?>
 					<td class="btn-success"><?=number_format($row->saldo,0,",",".")?></td>
