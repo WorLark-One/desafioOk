@@ -261,8 +261,9 @@ class Principal extends CI_Controller {
 		$this->Modelo->cambiarEstadoLink($estado,$id);
 	}
 	function deleteLink(){
-		$id = $this->input->post("id");
-		$this->Modelo->deleteLink($id);
+		$idUsuario = $this->input->post("idUsuario");
+		$idCentro = $this->input->post("idCentro");
+		$this->Modelo->deleteLink($idUsuario,$idCentro);
 	}
 	function eliminarUsuario(){
 		$id = $this->input->post("id");

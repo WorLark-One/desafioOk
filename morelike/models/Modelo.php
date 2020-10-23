@@ -319,10 +319,9 @@ class Modelo extends CI_Model{
         $this->db->update('usce',$data);
         $this->historialIntranet("Tabla: usce - Cambio Estado de Link ".$id." Estado: ".$estado);
     }
-    function deleteLink($id){
-        $this->db->where("id",$id);
-        $this->db->delete("ua");
-        $this->historialIntranet("Tabla: ua - Eliminacion de Link ".$id);
+    function deleteLink($idUsuario,$idCentro){
+		$sql = "DELETE from  usce where  idce = '$idCentro' and idus='$idUsuario' ;";
+		$this->db->query($sql);
     }
     function subirFichero($idarea,$cadenaArchivos,$fecha,$user, $ubicacion,$para){
         $data['area'] = $idarea;

@@ -78,7 +78,7 @@
 						<button class="btn btn-success" onclick="editLink(<?=$row->idc;?>)"><i class="far fa-save"></i></button>
 					</td>
 					<td>
-						<button class="btn btn-danger" onclick="deleteLink(<?=$row->idce;?>)"><i class="far fa-trash-alt"></i></button>
+						<button class="btn btn-danger" onclick="deleteLink(<?=$row->idu;?>,<?=$row->idc;?>)"><i class="far fa-trash-alt"></i></button>
 					</td>
 				</tr>
 			<?php endforeach;?>
@@ -122,13 +122,20 @@
 			}
 		},'json');
 	}
-	function deleteLink(id){
-		var opcion = confirm("¿Estás seguro de eliminar?\nNombre: "+$("#nombre"+id+" option:selected").text()+"\nÁrea: "+$("#area"+id+" option:selected").text()+"\nRol:"+$("#rol"+id+" option:selected").text());
-    	if (opcion == true) {
-    		$.post(base_url+"Principal/deleteLink",{id:id},function(){
+	function deleteLink(idUsuario,idCentro){
+		console.log("id a eliminar : "+ idUsuario);
+		console.log("id a eliminar : "+ idCentro);
+		$.post(base_url+"Principal/deleteLink",{idUsuario:idUsuario,idCentro:idCentro},function(){
     			$("#contenedor").hide("fast");
 				nuevoLink();
 			});
-		}
+		
+		// var opcion = confirm("¿Estás seguro de eliminar?\nNombre: "+$("#nombre"+id+" option:selected").text()+"\nÁrea: "+$("#area"+id+" option:selected").text()+"\nRol:"+$("#rol"+id+" option:selected").text());
+    	// if (opcion == true) {
+    	// 	$.post(base_url+"Principal/deleteLink",{id:id},function(){
+    	// 		$("#contenedor").hide("fast");
+		// 		nuevoLink();
+		// 	});
+		// }
 	}
 </script>
