@@ -53,17 +53,34 @@
 				<th>Ingreso</th>
 				<th>Egreso</th>
 				<th>Saldo</th>
+				<th>Opciones</th>
 				<?php foreach($data as $row):?>
 				<tr>
-					<td><?=substr($row->fecha,0,10)?></td>
-					<td><?=$row->descripcion?></td>
-					<td><?=number_format($row->ingreso,0,",",".")?></td>
-					<td><?=number_format($row->egreso,0,",",".")?></td>
+					<td>
+					<?=substr($row->fecha,0,10)?>
+					</td>
+					<td>
+						<input type="text" class="form-control" id="descripcion<?=$row->id?>" value="<?=$row->descripcion?>"/>
+					</td>
+					<td>
+						<input type="text" class="form-control" id="ingreso<?=$row->id?>" value="<?=number_format($row->ingreso,0,",",".")?>"/>
+					</td>
+					<td>
+						<input type="number" class="form-control" id="egreso<?=$row->id?>" value="<?=number_format($row->egreso,0,",",".")?>"/>
+					</td>
 					<?php if($row->saldo>0):?>
 					<td class="btn-success"><?=number_format($row->saldo,0,",",".")?></td>
 					<?php else:?>
 					<td class="btn-danger"><?=number_format($row->saldo,0,",",".")?></td>
 					<?php endif;?>
+					<td>
+						<button class="btn btn-info"   onclick="editarRegistro(<?=$row->id?>)">
+							<i class="far fa-edit"></i>
+						</button>
+						<button class="btn btn-danger ml-2" onclick="eliminarRegistro(<?=$row->id?>)">
+							<i class="fas fa-trash-alt"></i>
+						</button>
+					</td>
 				</tr>
 				<?php endforeach;?>
 			</table>
@@ -235,7 +252,7 @@
 				descripcion:descripcion, ingreso:ingreso, egreso:egreso
 			},function(){
 				$("#contenedor").hide('fast');
-	  			nuevoProcedimiento();
+				nuevoProcedimiento();
 			});
 		}
 	}
@@ -276,23 +293,73 @@
 	}
 	function saveImagen(id,archivo,nombre){
 		$.ajax({
-        	url:base_url+"Principal/saveImagen",
-         	type:"post",
-         	data:{file:archivo, id:id, nombre:nombre},
-         	processData:false,
-         	contentType:false,
-         	cache:false,
-         	async:false,
-  			success: function(data){
-              	alert("Upload Image Successful.");
-           	}
-     	});
+			url:base_url+"Principal/saveImagen",
+			type:"post",
+			data:{file:archivo, id:id, nombre:nombre},
+			processData:false,
+			contentType:false,
+			cache:false,
+			async:false,
+			success: function(data){
+				alert("Upload Image Successful.");
+			}
+		});
 		/*$.post(
 	  		base_url+"Principal/saveImagen",
 	  		{
 	  			id:id, archivo:archivo, nombre:nombre
 	  		}
   		);*/
+	}
+	function editarRegistro(id){
+		//alert("Falta registrar Ingreso o Egreso");
+		var descripcion = $("#descripcion"+id).val();
+		var ingreso = $("#ingreso"+id).val();
+		var valorIngreso = ingreso.split(".");
+		var egreso = $("#egreso"+id).val();
+		var valorEgreso = egreso.split(".");
+		ingreso = "";
+		egreso = "";
+		for (let index = 0; index < valorIngreso.length; index++) {
+			const element = valorIngreso[index];
+			if (index == 0) {
+				ingreso = element;
+			}
+			else{
+				ingreso = ingreso.concat(element);
+			}
+
+		}
+		for (let index = 0; index < valorEgreso.length; index++) {
+			const element = valorEgreso[index];
+			if (index == 0) {
+				egreso = element;
+			}
+			else{
+				egreso = egreso.concat(element);
+			}
+		}
+
+		console.log("descripcion "+descripcion);
+		console.log("ingreso "+ingreso);
+		console.log("egreso "+egreso);
+		$.post(base_url+"Principal/editarProcedimiento",{
+				id:id,descripcion:descripcion,ingreso:ingreso,egreso:egreso
+			},function(){
+				$("#contenedor").hide('fast');
+				nuevoProcedimiento();
+			});
+		console.log("editar "+id);
+	}
+
+	function eliminarRegistro(id){
+		$.post(base_url+"Principal/eliminarProcedimiento",{
+				id:id
+			},function(){
+				$("#contenedor").hide('fast');
+				nuevoProcedimiento();
+			});
+		console.log("eliminar"+id);
 	}
 
 </script>

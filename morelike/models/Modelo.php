@@ -73,6 +73,30 @@ class Modelo extends CI_Model{
         $data = array("descripcion"=>$descripcion,"fecha"=>Date("Y-m-d H:i:s"),"ingreso"=>$ingreso,"egreso"=>$egreso, "saldo"=>$saldo);
         $this->db->insert("registros",$data);
     }
+    function eliminarProcedimiento($id){
+        $sql1 = "delete from registros where id = $id;";
+        $res1 = $this->db->query($sql1);
+        $sql = "select * from registros order by id;";
+        $res = $this->db->query($sql);
+        $saldo=0;
+        foreach($res->result() as $row){
+            $saldo = $saldo + $row->ingreso - $row->egreso;
+            $sql = "UPDATE registros SET fecha = '$row->fecha', descripcion = '$row->descripcion', ingreso = $row->ingreso, egreso = $row->egreso, saldo = $saldo WHERE id = $row->id ;";
+            $this->db->query($sql);
+        }
+    }
+    function editarProcedimiento($id,$descripcion, $ingreso, $egreso){
+        $sql1 = "UPDATE registros SET descripcion = '$descripcion', ingreso = $ingreso, egreso = $egreso WHERE id = $id ;";
+        $res1 = $this->db->query($sql1);
+        $sql = "select * from registros order by id;";
+        $res = $this->db->query($sql);
+        $saldo=0;
+        foreach($res->result() as $row){
+            $saldo = $saldo + $row->ingreso - $row->egreso;
+            $sql = "UPDATE registros SET fecha = '$row->fecha', descripcion = '$row->descripcion', ingreso = $row->ingreso, egreso = $row->egreso, saldo = $saldo WHERE id = $row->id ;";
+            $this->db->query($sql);
+        }
+    }
     function buscarPacienteRut($rut){
         $this->db->where("rut",$rut);
         return $this->db->get("paciente")->result();
