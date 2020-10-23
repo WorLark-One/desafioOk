@@ -59,9 +59,9 @@
 						<select class="form-control" placeholder="Areas" aria-label="Areas" id="area<?=$row->id?>">
 					  	<?php foreach($areas as $row1):?>
 					  		<?php if($row1->id == $row->idc):?>
-					  			<option selected value="<?=$row1->id?>"><?=$row1->nombre?></option>
+					  			<option selected i value="<?=$row1->id?>"><?=$row1->nombre?></option>
 					  		<?php else:?>
-					  			<option value="<?=$row1->id?>"><?=$row1->nombre?></option>
+					  			<option  value="<?=$row1->id?>"><?=$row1->nombre?></option>
 				  			<?php endif;?>
 					  	<?php endforeach;?>
 			  </select>
@@ -75,7 +75,7 @@
 						<td><button class="btn btn-info" onclick="cambiarEstadoUA(0,<?=$row->idc?>)"><i class="far fa-eye"></i></button></td>
 					<?php endif;?>
 					<td>
-						<button class="btn btn-success" onclick="editLink(<?=$row->idc;?>)"><i class="far fa-save"></i></button>
+						<button class="btn btn-success" onclick="editLink(<?=$row->idc;?>,<?=$row->idu;?>, <?=$row->id;?>)"><i class="far fa-save"></i></button>
 					</td>
 					<td>
 						<button class="btn btn-danger" onclick="deleteLink(<?=$row->idu;?>,<?=$row->idc;?>)"><i class="far fa-trash-alt"></i></button>
@@ -103,8 +103,33 @@
 			nuevoLink();
 		});
 	}
-	function editLink(id){
-		addLink($("#nombre"+id).val(),$("#area"+id).val(),$("#rol"+id).val(),1,id);
+	function editLink(idCentro,idUsuario,idusce){
+		// $("#contenedor").hide("fast");
+		// nuevoLink();
+		
+		var idNuevoCentro = $("#area"+idusce).val();
+		// console.log("==========================");
+		// console.log("id centro: " + idCentro);
+		// console.log("id Usuario: " + idUsuario);
+		// console.log("id  tabla: " + idusce);
+		// console.log("id  nuevo centro: " + idNuevoCentro);
+		// console.log("==========================");
+		// addLink($("#nombre"+id).val(),$("#area"+id).val(),$("#rol"+id).val(),1,id);
+		$.post(base_url+"Principal/actualizarLink",{
+			idCentro :idUsuario,
+			idUsuario 	:idUsuario,
+			idusce 	:idusce,
+			idNuevoCentro:idNuevoCentro
+		},function(res){
+			console.log(res);
+			if(res.error == true){
+				$("#mensajeError").html("<p>Asignación ya existente</p>");
+				$("#mensajeError").show('fast');
+			}else{
+				$("#contenedor").hide("fast");
+				nuevoLink();
+			}
+		},'json');
 	}
 	function addLink(usuario,area,op,id){ //op=0 Insertar, op=1 Editar
 		$.post(base_url+"Principal/addNewLink",{
@@ -122,6 +147,7 @@
 			}
 		},'json');
 	}
+	//elimina la relación entre un centro y un usuario.
 	function deleteLink(idUsuario,idCentro){
 		console.log("id a eliminar : "+ idUsuario);
 		console.log("id a eliminar : "+ idCentro);

@@ -247,6 +247,16 @@ class Principal extends CI_Controller {
 		$res['areas'] 		= $this->Modelo->listarAreasActivas();
 		$this->load->view("newLink",$res);
 	}
+	//actualiza el link entre un usuario y un centro.
+	function actualizarLink(){
+		$idCentro = $this->input->post("idCentro");
+		$idUsuario 	= $this->input->post("idUsuario");
+		$idusce = $this->input->post("idusce");
+		$idNuevoCentro 	= $this->input->post("idNuevoCentro");
+		$this->Modelo->actualizarLink($idCentro,$idUsuario,$idusce,$idNuevoCentro);
+		$res['error'] = false;
+		echo json_encode($res);
+	}
 	function addNewLink(){
 		$usuario 	=$this->input->post("usuario");
 		$area 		=$this->input->post("area");
