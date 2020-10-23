@@ -111,12 +111,25 @@ class Principal extends CI_Controller {
 		$res['ultimo'] =$ultimo;
 		$this->load->view("nuevoProcedimiento",$res);
 	}
+
 	function saveProcedimiento(){
 		$descripcion = $this->input->post("descripcion");
 		$ingreso 	 = $this->input->post("ingreso");
 		$egreso 	 = $this->input->post("egreso");
 		$this->Modelo->saveProcedimiento($descripcion,$ingreso,$egreso);
 	}
+	function eliminarProcedimiento(){
+		$id = $this->input->post("id");
+		$this->Modelo->eliminarProcedimiento($id);
+	}
+	function editarProcedimiento(){
+		$id = $this->input->post("id");
+		$descripcion = $this->input->post("descripcion");
+		$ingreso = $this->input->post("ingreso");
+		$egreso = $this->input->post("egreso");
+		$this->Modelo->editarProcedimiento($id,$descripcion, $ingreso, $egreso);
+	}
+
 	function traeMasRegistros(){
 		$desde = $this->input->post("desde");
 		$result = $this->Modelo->buscarUltimosRegistrosDesde($desde);
