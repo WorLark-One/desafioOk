@@ -17,13 +17,13 @@
 		</div>
 		<div class="row">
 			<div class="col-4">
-				<input class="form-control" type="text" id="descripcion">
+				<input class="form-control" type="text" id="descripcion"  >
 			</div>
 			<div class="col-4">
-				<input class="form-control" type="number" id="ingreso" onchange="formato('ingreso')">
+				<input class="form-control" type="text" id="ingreso" onkeyup="separador(this)" onchange="formato('ingreso')">
 			</div>
 			<div class="col-4">
-				<input class="form-control" type="number" id="egreso" onchange="formato('egreso')">
+				<input class="form-control" type="text" id="egreso" onkeyup="separador(this)" onchange="formato('egreso')">
 			</div>
 		</div>
 		<div class="row">
@@ -63,10 +63,10 @@
 						<input type="text" class="form-control" id="descripcion<?=$row->id?>" value="<?=$row->descripcion?>"/>
 					</td>
 					<td>
-						<input type="text" class="form-control" id="ingreso<?=$row->id?>" value="<?=number_format($row->ingreso,0,",",".")?>"/>
+						<input type="text" class="form-control" onkeyup="separador(this)" id="ingreso<?=$row->id?>" value="<?=number_format($row->ingreso,0,",",".")?>"/>
 					</td>
 					<td>
-						<input type="number" class="form-control" id="egreso<?=$row->id?>" value="<?=number_format($row->egreso,0,",",".")?>"/>
+						<input type="number" class="form-control" onkeyup="separador(this)" id="egreso<?=$row->id?>" value="<?=number_format($row->egreso,0,",",".")?>"/>
 					</td>
 					<?php if($row->saldo>0):?>
 					<td class="btn-success"><?=number_format($row->saldo,0,",",".")?></td>
@@ -74,12 +74,16 @@
 					<td class="btn-danger"><?=number_format($row->saldo,0,",",".")?></td>
 					<?php endif;?>
 					<td>
-						<button class="btn btn-info"   onclick="editarRegistro(<?=$row->id?>)">
-							<i class="far fa-edit"></i>
-						</button>
+						<span title="Guardar edición">
+							<button class="btn btn-info"   onclick="editarRegistro(<?=$row->id?>)">
+								<i class="far fa-edit"></i>
+							</button>
+						</span>
+						<span title="Eliminar registro">
 						<button class="btn btn-danger ml-2" onclick="eliminarRegistro(<?=$row->id?>)">
 							<i class="fas fa-trash-alt"></i>
 						</button>
+						</span>
 					</td>
 				</tr>
 				<?php endforeach;?>
@@ -164,6 +168,19 @@
 	      return date;
 	    }
 	});
+	function separador(input){
+        var num = input.value.replace(/\./g,"");
+        if(!isNaN(num)) {
+			num = num.toString().split("").reverse().join("").replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+			num = num.split("").reverse().join("").replace(/^[\.]/, "");
+			input.value = num;
+        }
+        else{ 
+			alert("Solo se permiten numeros");
+			input.value = input.value.replace(/[^\d\.]*/g,"");
+        }
+	}	
+
 	function showResponse(responseText, statusText, xhr, $form){
 		var res = JSON.parse(responseText);
 		$("#nombreOrden").val(res.nombre);
