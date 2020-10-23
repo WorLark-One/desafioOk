@@ -47,7 +47,6 @@
 			<th></th>
 			<th></th>
 			<th></th>
-			<!-- <th></th> -->
 			<?php foreach($users as $row):?>
 				<tr>
 					<td><input class="form-control" type="text" id="rutEditado<?=$row->id?>" value="<?=$row->rut?>"></td>
@@ -131,7 +130,9 @@
 		},'json');
 	}
 
-	function cambiarEstadoUser(estado){
+	function cambiarEstadoUser(estado, id){
+		// console.log("estado : "+estado)
+		// console.log("id : "+ id)
 		$.post(base_url+"Principal/cambiarEstadoUser",{estado:estado,id:id},function(){
 			$("#contenedor").hide("fast");
 			nuevoUser();
