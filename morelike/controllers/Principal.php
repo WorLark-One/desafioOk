@@ -211,15 +211,24 @@ class Principal extends CI_Controller {
 		endif;
 		echo json_encode($res);
 	}
+	// Permite editar la información de un usuario registrado previamente.
 	function editarUsuario(){
 		$id = $this->input->post("id");
 		$rut = $this->input->post("rut");
 		$clave= $this->input->post("clave");
-		if( strlen(trim($clave))>0):
-			$res['error'] = $this->Modelo->editarUsuario($id,$rut,$clave);
-		else:
-			$res['error'] = true;
-		endif;
+		$nombre= $this->input->post("nombre");
+		// if( strlen(trim($clave))>0):
+		// 	$res['error'] = $this->Modelo->editarUsuario($id,$rut,$clave,$nombre);
+		// else:
+		// 	$res['error'] = true;
+		// endif;
+		$this->Modelo->actualizarNombreUsuario($id,$nombre);
+		$this->Modelo->actualizarClaveUsuario($id,$clave);
+		$this->Modelo->actualizarRutUsuario($id,$rut);
+		$res['error'] = true;
+		
+
+
 		echo json_encode($res);
 	}
 	function buscaUsuario(){

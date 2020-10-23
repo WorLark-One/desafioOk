@@ -234,27 +234,29 @@ class Modelo extends CI_Model{
             }
         }
 	}
-	 function editarUsuario($id,$rut,$clave){
-		//Valido que el nuevo usuario no esté repetido con su rut
-		$sql = "select * from usuario where rut = '".$rut."' and id !=".$id;
-		$res = $this->db->query($sql)->num_rows();
-		if($res > 0 ){//Significa que hay otro usuario anterior con el mismo rut
-			return true;
-		}else{
-			//Solo debo actualizar la clave si es que el usuario ingresó una nueva clave, por lo que deberé comparar el hash que viene con el que ya está en la base de datos.
-			$sql = "select * from usuario where clave = '".$clave."' and id =".$id;
-			$res1 = $this->db->query($sql)->num_rows();
-			if($res1 == 0){
-				$data['clave'] = md5($clave);
-			}
-			$data['rut'] = $rut;
-			$data['nombre'] = $nombre;
-			$this->db->where("id",$id);
-			$this->db->update("usuario",$data);
-			$this->historialIntranet("Tabla: usuario - Cambio de User - Id: ".$id." Nombre: ".$nombre);
-			return false;
+	 //Actualiza la contraseña de un usuario, a través del id.
+	 function actualizarNombreUsuario($id,$nombre){
+		if( strlen(trim(nombre))>0 ){
+			$sql = "UPDATE usuario SET nombre = '$nombre' WHERE id = $id ;";
+            $this->db->query($sql);
 		}
 	 }
+	 //Actualiza la contraseña de un usuario, a través del id.
+	 function actualizarClaveUsuario($id,$clave){
+		 $clave =md5($clave);
+		if( strlen(trim(clave))>0 ){
+			$sql = "UPDATE usuario SET clave = '$clave' WHERE id = $id ;";
+            $this->db->query($sql);
+		}
+	 }
+	 //Actualiza la contraseña de un usuario, a través del id.
+	 function actualizarRutUsuario($id,$rut){
+		if( strlen(trim(rut))>0 ){
+			$sql = "UPDATE usuario SET rut = '$rut' WHERE id = $id ;";
+            $this->db->query($sql);
+		}
+	 }
+
 	 function eliminarUsuario($id){
 		$sql = "Delete From Usuario where id =".$id;
 		$res1 = $this->db->query($sql);
