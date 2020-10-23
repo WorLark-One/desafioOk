@@ -179,6 +179,9 @@ class Principal extends CI_Controller {
 		$res['users'] = $this->Modelo->listarUsers();
 		$this->load->view("newUser",$res);
 	}
+	/**
+	 * registra un nuevo usuario en la base de datos
+	 */
 	function addNewUser(){
 		$rut 			= $this->input->post("rut");
 		$nombre 		= $this->input->post("nombre");
@@ -190,6 +193,17 @@ class Principal extends CI_Controller {
 		$id = $this->input->post("id");
 		if(strlen(trim($rut))>0 && strlen(trim($nombre))>0 && strlen(trim($clave))>0):
 			$res['error'] = $this->Modelo->addNewUser($rut, $nombre, $clave,$fNac,$especialidad,$cargo,$op,$id);
+		else:
+			$res['error'] = true;
+		endif;
+		echo json_encode($res);
+	}
+	function editarUsuario(){
+		$id = $this->input->post("id");
+		$rut = $this->input->post("rut");
+		$clave= $this->input->post("clave");
+		if( strlen(trim($clave))>0):
+			$res['error'] = $this->Modelo->editarUsuario($id,$rut,$clave);
 		else:
 			$res['error'] = true;
 		endif;
@@ -228,6 +242,18 @@ class Principal extends CI_Controller {
 		$id = $this->input->post("id");
 		$this->Modelo->deleteLink($id);
 	}
+	function eliminarUsuario(){
+		$id = $this->input->post("id");
+		$this->Modelo->eliminarUsuario($id);
+		$res['res'] = true;
+		echo json_encode($res);
+	}
+	function obtenerUsuario(){
+		$id = $this->input->post("id");
+		$res['res'] = $this->Modelo->obtenerUsuario($id);
+		echo json_encode($res);
+	}
+
 	function entrarArea(){
 		$idArea 	= $this->input->post("area");
 		$nombreArea = $this->input->post("nombre");

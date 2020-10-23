@@ -20,7 +20,7 @@
 			  <select class="form-control" placeholder="Especialdad" aria-label="Especialidad" id="txtAddUserEspecialidad">
 			  	<option selected disabled>Especialidad</option>
 			  	<option value="Enfermeria">Enfermeria</option>
-			  	<option value="TENS">TENS</option>
+				  <option value="TENS">TENS</option>
 			  </select>
 			</div>
 			<div class="col-4">
@@ -48,7 +48,7 @@
 			<th></th>
 			<?php foreach($users as $row):?>
 				<tr>
-					<td><input class="form-control" type="text" id="rut<?=$row->id?>" value="<?=$row->rut?>"></td>
+					<td><input class="form-control" type="text" id="rutEditado<?=$row->id?>" value="<?=$row->rut?>"></td>
 					<td><input class="form-control" type="text" id="nombre<?=$row->id?>" value="<?=$row->nombre?>"></td>
 					<td><input class="form-control" type="password" id="clave<?=$row->id?>" value="<?=$row->clave?>"></td>
 					<?php if($row->estado == 0):?>
@@ -58,9 +58,12 @@
 						<td ><i class="far fa-eye-slash fa-2x"></i></td>
 						<td ><button class="btn btn-info" onclick="cambiarEstadoUser(0,<?=$row->id?>)"><i class="far fa-eye"></i></button></td>
 					<?php endif;?>
-					<!--td rowspan="2">
-						<button class="btn btn-success" onclick="editUser(<?=$row->id;?>)"><i class="far fa-save"></i></button>
-					</td-->
+					
+					<td>
+					<button class="btn btn-success" onclick="obtenerUsuario( <?=$row->id;?>)"><i class="far fa-save"></i></button>
+					</td>
+					<td>
+					<button class="btn btn-danger" onclick="eliminarUsuario(<?=$row->id;?>)"><i class="far fa-trash-alt"></i></button>					</td>
 				</tr>
 				<!--tr>
 					<td>
@@ -90,7 +93,6 @@
 	$(document).ready(function(){
 		$("#txtAddUserRut").change(function(){
 			Rut($("#txtAddUserRut").val(),$("#txtAddUserRut"));
-			console.log("LOL");
 			$.post(
 				base_url+"Principal/buscaUsuario",
 				{rut:$("#txtAddUserRut").val()},
@@ -106,7 +108,11 @@
 	function verDivAddUser(){
 		$("#divAddUser").toggle('fast');
 	}
+	/**
+	*registra un nuevo usuario en la base de datos.
+	 */
 	function addNewUser(){
+		//accede directamente a las variables.
 		addUser(
 			$("#txtAddUserRut").val(),
 			$("#txtAddUserNombre").val(),
@@ -118,16 +124,39 @@
 			0
 		);
 	}
-	function cambiarEstadoUser(estado, id){
+	function cambiarEstadoUser(estado){
 		$.post(base_url+"Principal/cambiarEstadoUser",{estado:estado,id:id},function(){
 			$("#contenedor").hide("fast");
 			nuevoUser();
 		});
 	}
-	function editUser(id){
-		addUser($("#rut"+id).val(),$("#nombre"+id).val(),$("#clave"+id).val(),1,id);
+	//**Obtienen un usuario a traves de su identificador */
+	function obtenerUsuario(id){
+		$.post(base_url+"Principal/obtenerUsuario",{
+			id:id
+		},function(res){
+			console.log(res);
+			console.log(res['res'][0]['nombre']);
+		},'json');
+	}
+
+	function eliminarUsuario(id ){
+		console.log("eliminar el usuario con id: "+ id)
+		$.post(base_url+"Principal/eliminarUsuario",{
+			id:id
+		},function(res){
+			// console.log(res[0]['nombre']);
+			if(res.error == false){
+				$("#mensajeError").html("<p>Usuario ya existente o datos no válidos</p>");
+				$("#mensajeError").show('fast');
+			}else{
+				$("#contenedor").hide("fast");
+				nuevoUser();
+			}
+		},'json');
 	}
 	function addUser(rut, nombre, clave,fNac,especialidad, cargo, op, id){
+		
 		$.post(base_url+"Principal/addNewUser",{
 			rut:rut,
 			nombre:nombre,
@@ -138,6 +167,7 @@
 			op:op,
 			id:id
 		},function(res){
+			console.log(res);
 			if(res.error == true){
 				$("#mensajeError").html("<p>Usuario ya existente o datos no válidos</p>");
 				$("#mensajeError").show('fast');
