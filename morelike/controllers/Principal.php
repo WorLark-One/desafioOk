@@ -217,19 +217,9 @@ class Principal extends CI_Controller {
 		$rut = $this->input->post("rut");
 		$clave= $this->input->post("clave");
 		$nombre= $this->input->post("nombre");
-		// if( strlen(trim($clave))>0):
-		// 	$res['error'] = $this->Modelo->editarUsuario($id,$rut,$clave,$nombre);
-		// else:
-		// 	$res['error'] = true;
-		// endif;
 		$this->Modelo->actualizarNombreUsuario($id,$nombre);
 		$this->Modelo->actualizarClaveUsuario($id,$clave);
 		$this->Modelo->actualizarRutUsuario($id,$rut);
-		$res['error'] = true;
-		
-
-
-		echo json_encode($res);
 	}
 	function buscaUsuario(){
 		$rut = $this->input->post("rut");

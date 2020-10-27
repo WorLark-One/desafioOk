@@ -113,26 +113,24 @@
 	}
 	// edita la informacion de un usuario.
 	function editarUsuario(id){
-		$("#contenedor").hide("fast");
-		nuevoUser();
+		console.log("editar usuario");
+		//obtenimos los datos
 		var rut = $("#rutEditado"+id).val();
 		var nombre = $("#nombreEditado"+id).val();
 		var clave = $("#claveEditado"+id).val();
-		//Enviamos una peticion para que actualice los registros del usuario.
+
 		$.post(base_url+"Principal/editarUsuario",{
 			id:id,
 			rut:rut,
 			nombre:nombre,
 			clave:clave
-		},function(res){
-			console.log(res);
-			
-		},'json');
+		},function(){
+			$("#contenedor").hide("fast");
+			nuevoUser();
+		});
 	}
 
 	function cambiarEstadoUser(estado, id){
-		// console.log("estado : "+estado)
-		// console.log("id : "+ id)
 		$.post(base_url+"Principal/cambiarEstadoUser",{estado:estado,id:id},function(){
 			$("#contenedor").hide("fast");
 			nuevoUser();

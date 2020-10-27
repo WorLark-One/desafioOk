@@ -41,16 +41,18 @@
 			<th>Estado</th>
 			<th></th>
 			<th></th>
-			<th></th>
 			<?php foreach($links as $row):?>
+				
+
 				<tr>
 					<td>
-						<select class="form-control" placeholder="Usuario" aria-label="Usuario" id="nombre<?=$row->id?>">
+						<select class="form-control"  type="text" placeholder="Usuario" aria-label="Usuario" id="nombre<?=$row->id?>" 
+						>
 					  	<?php foreach($usuarios as $row1):?>
 					  		<?php if($row1->id == $row->idu):?>
 					  			<option selected value="<?=$row1->id?>"><?=$row1->nombre?></option>
 					  		<?php else:?>
-					  			<option value="<?=$row1->id?>"><?=$row1->nombre?></option>
+					  			<!-- <option value="<?=$row1->id?>"><?=$row1->nombre?></option> -->
 					  		<?php endif;?>
 					  	<?php endforeach;?>
 			  </select>
