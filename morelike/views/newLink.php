@@ -42,8 +42,6 @@
 			<th></th>
 			<th></th>
 			<?php foreach($links as $row):?>
-				
-
 				<tr>
 					<td>
 						<select class="form-control"  type="text" placeholder="Usuario" aria-label="Usuario" id="nombre<?=$row->id?>" 
@@ -71,10 +69,10 @@
 					
 					<?php if($row->estadousce == 0):?>
 						<td><i class="far fa-eye fa-2x"></i></td>
-						<td><button class="btn btn-info" onclick="cambiarEstadoUA(1,<?=$row->idc?>)"><i class="far fa-eye-slash"></i></button></td>
+						<td><button class="btn btn-info" onclick="cambiarEstadoUA(1,<?=$row->id?>)"><i class="far fa-eye-slash"></i></button></td>
 					<?php else:?>
 						<td><i class="far fa-eye-slash fa-2x"></i></td>
-						<td><button class="btn btn-info" onclick="cambiarEstadoUA(0,<?=$row->idc?>)"><i class="far fa-eye"></i></button></td>
+						<td><button class="btn btn-info" onclick="cambiarEstadoUA(0,<?=$row->id?>)"><i class="far fa-eye"></i></button></td>
 					<?php endif;?>
 					<td>
 						<button class="btn btn-success" onclick="editLink(<?=$row->idc;?>,<?=$row->idu;?>, <?=$row->id;?>)"><i class="far fa-save"></i></button>

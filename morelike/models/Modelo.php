@@ -281,7 +281,7 @@ class Modelo extends CI_Model{
 	}
 	//Entrega una lista de todos los usuarios asociados a centros,
     function listarLinks(){
-        $sql = "select usuario.id as idu, usuario.nombre, usuario.rut, usuario.estado as estadousuario, centro.id as idc, centro.nombre, centro.estado as estadocentro, usce.estado as estadousce, usce.idce, usce.id from usce join usuario on usuario.id = usce.idus join centro on centro.id = usce.idce where usce.estado != 1 and usuario.estado != 1 order by usuario.nombre, centro.nombre";
+        $sql = "select usuario.id as idu, usuario.nombre, usuario.rut, usuario.estado as estadousuario, centro.id as idc, centro.nombre, centro.estado as estadocentro, usce.estado as estadousce, usce.idce, usce.id from usce join usuario on usuario.id = usce.idus join centro on centro.id = usce.idce where usuario.estado != 1 order by usuario.nombre, centro.nombre";
         return $this->db->query($sql)->result();
     }
     function buscaLinks(){
@@ -320,9 +320,8 @@ class Modelo extends CI_Model{
         }
     }
     function cambiarEstadoLink($estado,$id){
-        $data['estado'] = $estado;
-        $this->db->where("id",$id);
-        $this->db->update('usce',$data);
+		$sql = "UPDATE usce SET estado = '$estado' WHERE id = $id ;";
+		$this->db->query($sql);
         $this->historialIntranet("Tabla: usce - Cambio Estado de Link ".$id." Estado: ".$estado);
     }
     function deleteLink($idUsuario,$idCentro){
