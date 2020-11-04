@@ -104,24 +104,13 @@
 		});
 	}
 	function editLink(idCentro,idUsuario,idusce){
-		// $("#contenedor").hide("fast");
-		// nuevoLink();
-		
 		var idNuevoCentro = $("#area"+idusce).val();
-		// console.log("==========================");
-		// console.log("id centro: " + idCentro);
-		// console.log("id Usuario: " + idUsuario);
-		// console.log("id  tabla: " + idusce);
-		// console.log("id  nuevo centro: " + idNuevoCentro);
-		// console.log("==========================");
-		// addLink($("#nombre"+id).val(),$("#area"+id).val(),$("#rol"+id).val(),1,id);
 		$.post(base_url+"Principal/actualizarLink",{
 			idCentro :idUsuario,
 			idUsuario 	:idUsuario,
 			idusce 	:idusce,
 			idNuevoCentro:idNuevoCentro
 		},function(res){
-			console.log(res);
 			if(res.error == true){
 				$("#mensajeError").html("<p>Asignación ya existente</p>");
 				$("#mensajeError").show('fast');
@@ -149,8 +138,6 @@
 	}
 	//elimina la relación entre un centro y un usuario.
 	function deleteLink(idUsuario,idCentro){
-		console.log("id a eliminar : "+ idUsuario);
-		console.log("id a eliminar : "+ idCentro);
 		$.post(base_url+"Principal/deleteLink",{idUsuario:idUsuario,idCentro:idCentro},function(){
     			$("#contenedor").hide("fast");
 				nuevoLink();
