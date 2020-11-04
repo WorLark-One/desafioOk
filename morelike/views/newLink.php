@@ -41,16 +41,16 @@
 			<th>Estado</th>
 			<th></th>
 			<th></th>
-			<th></th>
 			<?php foreach($links as $row):?>
 				<tr>
 					<td>
-						<select class="form-control" placeholder="Usuario" aria-label="Usuario" id="nombre<?=$row->id?>">
+						<select class="form-control"  type="text" placeholder="Usuario" aria-label="Usuario" id="nombre<?=$row->id?>" 
+						>
 					  	<?php foreach($usuarios as $row1):?>
 					  		<?php if($row1->id == $row->idu):?>
 					  			<option selected value="<?=$row1->id?>"><?=$row1->nombre?></option>
 					  		<?php else:?>
-					  			<option value="<?=$row1->id?>"><?=$row1->nombre?></option>
+					  			<!-- <option value="<?=$row1->id?>"><?=$row1->nombre?></option> -->
 					  		<?php endif;?>
 					  	<?php endforeach;?>
 			  </select>
@@ -59,9 +59,9 @@
 						<select class="form-control" placeholder="Areas" aria-label="Areas" id="area<?=$row->id?>">
 					  	<?php foreach($areas as $row1):?>
 					  		<?php if($row1->id == $row->idc):?>
-					  			<option selected value="<?=$row1->id?>"><?=$row1->nombre?></option>
+					  			<option selected i value="<?=$row1->id?>"><?=$row1->nombre?></option>
 					  		<?php else:?>
-					  			<option value="<?=$row1->id?>"><?=$row1->nombre?></option>
+					  			<option  value="<?=$row1->id?>"><?=$row1->nombre?></option>
 				  			<?php endif;?>
 					  	<?php endforeach;?>
 			  </select>
@@ -69,16 +69,16 @@
 					
 					<?php if($row->estadousce == 0):?>
 						<td><i class="far fa-eye fa-2x"></i></td>
-						<td><button class="btn btn-info" onclick="cambiarEstadoUA(1,<?=$row->idc?>)"><i class="far fa-eye-slash"></i></button></td>
+						<td><button class="btn btn-info" onclick="cambiarEstadoUA(1,<?=$row->id?>)"><i class="far fa-eye-slash"></i></button></td>
 					<?php else:?>
 						<td><i class="far fa-eye-slash fa-2x"></i></td>
-						<td><button class="btn btn-info" onclick="cambiarEstadoUA(0,<?=$row->idc?>)"><i class="far fa-eye"></i></button></td>
+						<td><button class="btn btn-info" onclick="cambiarEstadoUA(0,<?=$row->id?>)"><i class="far fa-eye"></i></button></td>
 					<?php endif;?>
 					<td>
-						<button class="btn btn-success" onclick="editLink(<?=$row->idc;?>)"><i class="far fa-save"></i></button>
+						<button class="btn btn-success" onclick="editLink(<?=$row->idc;?>,<?=$row->idu;?>, <?=$row->id;?>)"><i class="far fa-save"></i></button>
 					</td>
 					<td>
-						<button class="btn btn-danger" onclick="deleteLink(<?=$row->idce;?>)"><i class="far fa-trash-alt"></i></button>
+						<button class="btn btn-danger" onclick="deleteLink(<?=$row->idu;?>,<?=$row->idc;?>)"><i class="far fa-trash-alt"></i></button>
 					</td>
 				</tr>
 			<?php endforeach;?>
@@ -103,8 +103,22 @@
 			nuevoLink();
 		});
 	}
-	function editLink(id){
-		addLink($("#nombre"+id).val(),$("#area"+id).val(),$("#rol"+id).val(),1,id);
+	function editLink(idCentro,idUsuario,idusce){
+		var idNuevoCentro = $("#area"+idusce).val();
+		$.post(base_url+"Principal/actualizarLink",{
+			idCentro :idUsuario,
+			idUsuario 	:idUsuario,
+			idusce 	:idusce,
+			idNuevoCentro:idNuevoCentro
+		},function(res){
+			if(res.error == true){
+				$("#mensajeError").html("<p>Asignación ya existente</p>");
+				$("#mensajeError").show('fast');
+			}else{
+				$("#contenedor").hide("fast");
+				nuevoLink();
+			}
+		},'json');
 	}
 	function addLink(usuario,area,op,id){ //op=0 Insertar, op=1 Editar
 		$.post(base_url+"Principal/addNewLink",{
@@ -122,13 +136,19 @@
 			}
 		},'json');
 	}
-	function deleteLink(id){
-		var opcion = confirm("¿Estás seguro de eliminar?\nNombre: "+$("#nombre"+id+" option:selected").text()+"\nÁrea: "+$("#area"+id+" option:selected").text()+"\nRol:"+$("#rol"+id+" option:selected").text());
-    	if (opcion == true) {
-    		$.post(base_url+"Principal/deleteLink",{id:id},function(){
+	//elimina la relación entre un centro y un usuario.
+	function deleteLink(idUsuario,idCentro){
+		$.post(base_url+"Principal/deleteLink",{idUsuario:idUsuario,idCentro:idCentro},function(){
     			$("#contenedor").hide("fast");
 				nuevoLink();
 			});
-		}
+		
+		// var opcion = confirm("¿Estás seguro de eliminar?\nNombre: "+$("#nombre"+id+" option:selected").text()+"\nÁrea: "+$("#area"+id+" option:selected").text()+"\nRol:"+$("#rol"+id+" option:selected").text());
+    	// if (opcion == true) {
+    	// 	$.post(base_url+"Principal/deleteLink",{id:id},function(){
+    	// 		$("#contenedor").hide("fast");
+		// 		nuevoLink();
+		// 	});
+		// }
 	}
 </script>

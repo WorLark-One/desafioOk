@@ -191,7 +191,8 @@ class Modelo extends CI_Model{
         $this->db->where("estado",0);
         $this->db->order_by("nombre");
         return $this->db->get("usuario")->result();
-    }
+	}
+	
     function addNewUser($rut, $nombre, $clave,$fNac,$especialidad,$cargo, $op, $id){
         //si op = 0 es Insert de nuevo usuario.. si op = 1 es update.
         if($op == 0){
@@ -232,15 +233,55 @@ class Modelo extends CI_Model{
                 return false;
             }
         }
-    }
+	}
+	 //Actualiza la contraseña de un usuario, a través del id.
+	 function actualizarNombreUsuario($id,$nombre){
+		if( strlen(trim(nombre))>0 ){
+			$sql = "UPDATE usuario SET nombre = '$nombre' WHERE id = $id ;";
+            $this->db->query($sql);
+		}
+	 }
+	 //Actualiza la contraseña de un usuario, a través del id.
+	 function actualizarClaveUsuario($id,$clave){
+		 $clave =md5($clave);
+		if( strlen(trim(clave))>0 ){
+			$sql = "UPDATE usuario SET clave = '$clave' WHERE id = $id ;";
+            $this->db->query($sql);
+		}
+	 }
+	 //Actualiza la contraseña de un usuario, a través del id.
+	 function actualizarRutUsuario($id,$rut){
+		if( strlen(trim(rut))>0 ){
+			$sql = "UPDATE usuario SET rut = '$rut' WHERE id = $id ;";
+            $this->db->query($sql);
+		}
+	 }
+	 function actualizarLink($idCentro,$idUsuario,$idusce,$idNuevoCentro){
+		$sql =  "UPDATE usce SET idce = '$idNuevoCentro' WHERE id = $idusce ;";
+		$this->db->query($sql);
+		return true;
+	 }
+
+	 function eliminarUsuario($id){
+		$sql = "Delete From Usuario where id =".$id;
+		$res1 = $this->db->query($sql);
+		
+		return true;
+	 }
+	 function obtenerUsuario($id){
+		$sql = "Select * From Usuario where id =".$id;		
+		return $this->db->query($sql)->result();
+	 }
+
     function cambiarEstadoUser($estado,$id){
         $data['estado'] = $estado;
         $this->db->where("id",$id);
         $this->db->update('usuario',$data);
         $this->historialIntranet("Tabla: usuario - Cambio de Estado User - Id: ".$id." Estado: ".$estado);
-    }
+	}
+	//Entrega una lista de todos los usuarios asociados a centros,
     function listarLinks(){
-        $sql = "select usuario.id as idu, usuario.nombre, usuario.rut, usuario.estado as estadousuario, centro.id as idc, centro.nombre, centro.estado as estadocentro, usce.estado as estadousce, usce.idce from usce join usuario on usuario.id = usce.idus join centro on centro.id = usce.idce order by usuario.nombre, centro.nombre";
+        $sql = "select usuario.id as idu, usuario.nombre, usuario.rut, usuario.estado as estadousuario, centro.id as idc, centro.nombre, centro.estado as estadocentro, usce.estado as estadousce, usce.idce, usce.id from usce join usuario on usuario.id = usce.idus join centro on centro.id = usce.idce where usuario.estado != 1 order by usuario.nombre, centro.nombre";
         return $this->db->query($sql)->result();
     }
     function buscaLinks(){
@@ -279,15 +320,13 @@ class Modelo extends CI_Model{
         }
     }
     function cambiarEstadoLink($estado,$id){
-        $data['estado'] = $estado;
-        $this->db->where("id",$id);
-        $this->db->update('usce',$data);
+		$sql = "UPDATE usce SET estado = '$estado' WHERE id = $id ;";
+		$this->db->query($sql);
         $this->historialIntranet("Tabla: usce - Cambio Estado de Link ".$id." Estado: ".$estado);
     }
-    function deleteLink($id){
-        $this->db->where("id",$id);
-        $this->db->delete("ua");
-        $this->historialIntranet("Tabla: ua - Eliminacion de Link ".$id);
+    function deleteLink($idUsuario,$idCentro){
+		$sql = "DELETE from  usce where  idce = '$idCentro' and idus='$idUsuario' ;";
+		$this->db->query($sql);
     }
     function subirFichero($idarea,$cadenaArchivos,$fecha,$user, $ubicacion,$para){
         $data['area'] = $idarea;

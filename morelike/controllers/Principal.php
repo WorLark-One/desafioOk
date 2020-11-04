@@ -192,6 +192,12 @@ class Principal extends CI_Controller {
 		$res['users'] = $this->Modelo->listarUsers();
 		$this->load->view("newUser",$res);
 	}
+	function Documento(){
+		$this->load->view("Documento");
+	}
+	/**
+	 * registra un nuevo usuario en la base de datos
+	 */
 	function addNewUser(){
 		$rut 			= $this->input->post("rut");
 		$nombre 		= $this->input->post("nombre");
@@ -207,6 +213,16 @@ class Principal extends CI_Controller {
 			$res['error'] = true;
 		endif;
 		echo json_encode($res);
+	}
+	// Permite editar la información de un usuario registrado previamente.
+	function editarUsuario(){
+		$id = $this->input->post("id");
+		$rut = $this->input->post("rut");
+		$clave= $this->input->post("clave");
+		$nombre= $this->input->post("nombre");
+		$this->Modelo->actualizarNombreUsuario($id,$nombre);
+		$this->Modelo->actualizarClaveUsuario($id,$clave);
+		$this->Modelo->actualizarRutUsuario($id,$rut);
 	}
 	function buscaUsuario(){
 		$rut = $this->input->post("rut");
@@ -224,6 +240,16 @@ class Principal extends CI_Controller {
 		$res['areas'] 		= $this->Modelo->listarAreasActivas();
 		$this->load->view("newLink",$res);
 	}
+	//actualiza el link entre un usuario y un centro.
+	function actualizarLink(){
+		$idCentro = $this->input->post("idCentro");
+		$idUsuario 	= $this->input->post("idUsuario");
+		$idusce = $this->input->post("idusce");
+		$idNuevoCentro 	= $this->input->post("idNuevoCentro");
+		$this->Modelo->actualizarLink($idCentro,$idUsuario,$idusce,$idNuevoCentro);
+		$res['error'] = false;
+		echo json_encode($res);
+	}
 	function addNewLink(){
 		$usuario 	=$this->input->post("usuario");
 		$area 		=$this->input->post("area");
@@ -238,9 +264,22 @@ class Principal extends CI_Controller {
 		$this->Modelo->cambiarEstadoLink($estado,$id);
 	}
 	function deleteLink(){
-		$id = $this->input->post("id");
-		$this->Modelo->deleteLink($id);
+		$idUsuario = $this->input->post("idUsuario");
+		$idCentro = $this->input->post("idCentro");
+		$this->Modelo->deleteLink($idUsuario,$idCentro);
 	}
+	function eliminarUsuario(){
+		$id = $this->input->post("id");
+		$this->Modelo->eliminarUsuario($id);
+		$res['res'] = true;
+		echo json_encode($res);
+	}
+	function obtenerUsuario(){
+		$id = $this->input->post("id");
+		$res['res'] = $this->Modelo->obtenerUsuario($id);
+		echo json_encode($res);
+	}
+
 	function entrarArea(){
 		$idArea 	= $this->input->post("area");
 		$nombreArea = $this->input->post("nombre");
