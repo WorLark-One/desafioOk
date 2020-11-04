@@ -10,7 +10,7 @@
 			</div>
 			<div class="col-4 text-center">
 				<h4>Ingreso</h4>
-			</div>
+			</div>   
 			<div class="col-4 text-center">
 				<h4>Egreso</h4>	
 			</div>
@@ -31,32 +31,45 @@
 				<button class="btn btn-success" style="width: 100%; margin-top: 10px;" onclick="guardarNuevoProcedimiento()">Guardar <i class="far fa-save"></i></button>
 			</div>
 			<div class="col-6">
-				<button class="btn btn-warning" style="width: 100%; margin-top: 10px;" onclick="verBusquedas()" id="verBusquedas">Buscar <i class="fas fa-search-plus"></i></button>
-				<button class="btn btn-warning" id="ocultarBusquedas" style="display:none; width: 100%; margin-top: 10px;" onclick="ocultarBusquedas()">Buscar <i class="fas fa-search-plus"></i></button>
+				<button class="btn btn-warning" style="width: 100%; margin-top: 10px;" onclick="verBusquedas()" id="verBusquedas">Busqueda <i class="fas fa-search-plus"></i></button>
+				<button class="btn btn-warning" id="ocultarBusquedas" style="display:none; width: 100%; margin-top: 10px;" onclick="ocultarBusquedas()">Busqueda <i class="fas fa-search-plus"></i></button>
 			</div>
 		</div>
 	</div>
-	<div class="col-12 col-lg-6" style="display: none" id="divBusqueda">
+	<div class="col-12 col-lg-12" style="display: none" id="divBusqueda">
 		<fieldset>
 			<legend>Búsquedas</legend>
 			<label for="from">Desde</label>
 			<input type="text" id="from" name="from">
 			<label for="to">Hasta</label>
 			<input type="text" id="to" name="to">
+			<span title="Buscar">
+			<button class="btn btn-info ml-2 mb-2"  onclick="buscadorRangoFecha()" id="buscarFecha">
+				<i class="fas fa-search-plus "></i>
+			</button>
+			</span>
+			<span title="Cancelar busqueda">
+			<button class="btn btn-danger ml-2 mb-2" onclick="cancelarBuscadorRangoFecha()">
+				<i class="fas fas fa-times"></i>
+			</button>
+			</span>
 		</fieldset>
 	</div>
 	<?php if($cant > 0):?>
 		<div class="col-12 col-lg-12" id="ultimosRegistros">
 			<table class="table table-striped" id="tablaRegistros">
+				<thead>
 				<th>Fecha</th>
 				<th>Descripción</th>
 				<th>Ingreso</th>
 				<th>Egreso</th>
 				<th>Saldo</th>
 				<th>Opciones</th>
+				</thead>
+				<tbody>
 				<?php foreach($data as $row):?>
 				<tr>
-					<td>
+					<td idate>
 					<?=substr($row->fecha,0,10)?>
 					</td>
 					<td>
@@ -87,11 +100,13 @@
 					</td>
 				</tr>
 				<?php endforeach;?>
+				</tbody>
 			</table>
 			<input type="hidden" id="idOculto" value="<?=$ultimo?>">
 			<button class="btn btn-info" onclick="addRegistros()" style="width: 100%; margin-top:5px;"><i class="fas fa-cloud-download-alt fa-2x"></i></button>
 		</div>
 	<?php endif;?>
+
 	
 </div>
 <style type="text/css">
@@ -151,7 +166,7 @@
 	      to = $( "#to" ).datepicker({
 	        defaultDate: "+1w",
 	        changeMonth: true,
-	        numberOfMonths: 2
+	        numberOfMonths: 1
 	      })
 	      .on( "change", function() {
 	        from.datepicker( "option", "maxDate", getDate( this ) );
@@ -180,7 +195,71 @@
 			input.value = input.value.replace(/[^\d\.]*/g,"");
         }
 	}	
-
+	function buscadorRangoFecha() {
+		const tableReg = document.getElementById('tablaRegistros');
+		var dateMinAux = Date.parse($('#from').val());
+		var dateMaxAux = Date.parse($('#to').val());
+		var dateMin = 0;
+		var dateMax = 0;
+		var flag = true;
+		console.log(dateMin);
+		console.log(dateMax);
+		if (dateMinAux <= dateMaxAux) {
+			dateMax=dateMaxAux;
+			dateMin=dateMinAux;
+		}
+		else{
+			alert("La fecha de inicio debe ser menor o igual a la fecha final");
+			flag =false;
+		}
+		if (flag) {
+			let total = 0;
+			for (let i = 1; i < tableReg.rows.length; i++) {
+				let found = false;
+				const cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+				var a = Date.parse(cellsOfRow[0].innerText);
+				console.log(a);
+				
+				if (dateMin <= a  && dateMax >= a) {
+					found = true;
+					total++;
+				}
+				
+				if (found) {
+					tableReg.rows[i].style.display = '';
+				} else {
+					// esconder la fila
+					tableReg.rows[i].style.display = 'none';
+				}
+			}
+			//coincidencias
+			const lastTR=tableReg.rows[tableReg.rows.length-1];
+			const td=lastTR.querySelector("td");
+			//lastTR.classList.remove("hide", "red");
+			//if (total == 0) {
+				//lastTR.classList.add("red");
+				//td.innerHTML="No se han encontrado coincidencias";
+			//}
+				//lastTR.classList.add("hide");
+			//} else if (total) {
+				//td.innerHTML="Se ha encontrado "+total+" coincidencia"+((total>1)?"s":"");
+			//} else {
+				//lastTR.classList.add("red");
+				//td.innerHTML="No se han encontrado coincidencias";
+			//}
+		}
+		
+	}
+	function cancelarBuscadorRangoFecha() {
+		const tableReg = document.getElementById('tablaRegistros');
+		for (let i = 1; i < tableReg.rows.length; i++) {
+				tableReg.rows[i].style.display = '';
+		}
+		const lastTR=tableReg.rows[tableReg.rows.length-1];
+		const td=lastTR.querySelector("td");
+		document.getElementById("from").value = "";
+		document.getElementById("to").value = "";
+	}
 	function showResponse(responseText, statusText, xhr, $form){
 		var res = JSON.parse(responseText);
 		$("#nombreOrden").val(res.nombre);
@@ -252,7 +331,7 @@
 		};
 		var fail = 0;
 		if(descripcion.length==0 && (ingreso.length == 0 || egreso.length == 0)){
-			alert("Debes regstrar Descripción e Ingreso o Egreso");
+			alert("Debes registrar Descripción e Ingreso o Egreso");
 			fail=1;
 		}
 		if(descripcion.length>0 && ingreso.length == 0 && egreso.length == 0){
@@ -282,6 +361,8 @@
 		$("#divBusqueda").hide("fast");
 		$("#verBusquedas").show();
 		$("#ocultarBusquedas").hide();
+		document.getElementById("from").value = "";
+		document.getElementById("to").value = "";
 	}
 	function formato(campo){
 		var cadena = $("#"+campo).val();
@@ -304,7 +385,9 @@
 					}
 					$("#idOculto").val(data.ultimo);
 					$("#tablaRegistros").append(cadena);
+					//$("#contenedor").hide('fast');
 				}
+				
 			},'json'
 		);
 	}
