@@ -257,10 +257,16 @@ class Modelo extends CI_Model{
 		}
 	 }
 	 function actualizarLink($idCentro,$idUsuario,$idusce,$idNuevoCentro){
-		$sql =  "UPDATE usce SET idce = '$idNuevoCentro' WHERE id = $idusce ;";
-		$this->db->query($sql);
+		$sql =  "SELECT * from `usce` WHERE id='$idusce' and idce='$idNuevoCentro' and idus ='$idUsuario' ;";
+		$valor = $this->db->query($sql)->result();
+
+		if($valor == null){
+			$sql =  "UPDATE usce SET idce = '$idNuevoCentro' WHERE id = $idusce ;";
+			$this->db->query($sql);
+			return true;
+		}
 		
-		return true;
+		return false;
 	 }
 
 	 function obtenerListaFechas(){
@@ -283,7 +289,7 @@ class Modelo extends CI_Model{
 		}
 		return $array;//$array;
 	 }
-	 
+	  
 
 	 function eliminarUsuario($id){
 		$sql = "Delete From Usuario where id =".$id;

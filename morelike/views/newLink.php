@@ -39,6 +39,8 @@
 			<th>Área</th>
 			<th>Rol</th>
 			<th>Estado</th>
+			<th>Modificar</th>
+			<th>Eliminar</th>
 			<th></th>
 			<th></th>
 			<?php foreach($links as $row):?>
@@ -142,13 +144,6 @@
     			$("#contenedor").hide("fast");
 				nuevoLink();
 			});
-		
-		// var opcion = confirm("¿Estás seguro de eliminar?\nNombre: "+$("#nombre"+id+" option:selected").text()+"\nÁrea: "+$("#area"+id+" option:selected").text()+"\nRol:"+$("#rol"+id+" option:selected").text());
-    	// if (opcion == true) {
-    	// 	$.post(base_url+"Principal/deleteLink",{id:id},function(){
-    	// 		$("#contenedor").hide("fast");
-		// 		nuevoLink();
-		// 	});
-		// }
+
 	}
 </script>
