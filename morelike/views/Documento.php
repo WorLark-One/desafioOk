@@ -52,11 +52,11 @@
 				<?php if($row->rol !="Administrador"):?>  
 				
 					<tr>
-					<td><input class="form-control" type="text" id="rut<?=$row->id?>" value="<?=$row->rut?>"></td>
-					<td><input class="form-control" type="text" id="nombre<?=$row->id?>" value="<?=$row->nombre?>"></td>
-					<td><input class="form-control" type="text" id="rol<?=$row->id?>" value="<?=$row->rol?>"></td>
-					<td><input class="form-control" type="text" id="especialidad<?=$row->id?>" value="<?=$row->especialidad?>"></td>
-					<td><input class="form-control" type="text" id="acceso<?=$row->id?>" value="<?=$row->acceso?>"></td>
+					<td><text><?=$row->rut?></text></td>
+					<td><text><?=$row->nombre?></text></td>
+					<td><text><?=$row->rol?></text></td>
+					<td><text><?=$row->especialidad?></text></td>
+					<td><text><?=$row->acceso?></text></td>
 					</td> 
 				<?php endif;?>
 			<?php endforeach;?>
