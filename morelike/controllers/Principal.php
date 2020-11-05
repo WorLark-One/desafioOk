@@ -192,6 +192,10 @@ class Principal extends CI_Controller {
 		$res['users'] = $this->Modelo->listarUsers();
 		$this->load->view("newUser",$res);
 	}
+	/**
+	 * Se envia informacion con respecto a los usuarios, ademas, se envia un lista 
+	 * que contiene la suma de ingresos y ingresos todales diarios ordenasdos por fecha
+	 */
 	function Documento(){
 		$array = array();
 			$fechas = $this->Modelo->obtenerListaFechas();

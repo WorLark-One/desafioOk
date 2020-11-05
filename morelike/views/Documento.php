@@ -19,7 +19,6 @@
 			<?php endforeach;?>
 		</table>
 	</div>
-
 	<div class="col-12">
 		<div class="col-12 mt-4">
 			<h3 class="text-center">Montos final de ingresos/egresos por día</h3>
@@ -48,32 +47,4 @@
 	function verDivAddUser(){
 		$("#divAddUser").toggle('fast');
 	}
-
-	function obtenerIngresoEgresoDia(){
-		$.post(base_url+"Principal/calcularIngresoEgresoDiario",{
-		},function(res){
-			console.log(res);
-		
-				
-			for(i=0;i<res.fechas.length;i++) {
-				var algo =res.fechas[i];//console.log(res.fechas[i]);
-				//console.log(algo);
-				for(i=0;i<algo.length;i++){
-					var final =algo[i];//console.log(res.fechas[i]);
-					console.log(final.fecha);
-				}
-			}
-
-
-			if(res.error == false){
-				$("#mensajeError").html("<p>Usuario ya existente o datos no válidos</p>");
-				$("#mensajeError").show('fast');
-			}else{
-				
-				nuevoUser();
-			}
-		},'json');
-	}
-
-	
 </script>
