@@ -66,25 +66,6 @@
 					<td>
 					<button class="btn btn-danger" onclick="eliminarUsuario(<?=$row->id;?>)"><i class="far fa-trash-alt"></i></button>					</td>
 				</tr>
-				<!--tr>
-					<td>
-					  <input type="date" class="form-control" placeholder="Fecha Nacimiento" aria-label="Fecha Nacimiento" id="txtAddUserFNac">
-					</td>
-					<td>
-					  <select class="form-control" placeholder="Especialdad" aria-label="Especialidad" id="txtAddUserEspecialidad">
-					  	<option selected disabled>Especialidad</option>
-					  	<option value="enfermeria">Enfermería</option>
-					  	<option value="tens">TENS</option>
-					  </select>
-					</td>
-					<td>
-					  <select class="form-control" placeholder="Cargo" aria-label="Cargo" id="txtAddUserCargo">
-					  	<option selected disabled>Cargo</option>
-					  	<option value="funcionario">Funcionario</option>
-					  	<option value="administrador">Administrador</option>
-					  </select>
-					</td>
-				</tr-->
 			<?php endforeach;?>
 		</table>
 	</div>
@@ -186,20 +167,5 @@
 			}
 		},'json');
 	}
-// function actualizar(){
-// 	$("#txtAddUserRut").change(function(){
-// 		Rut($("#txtAddUserRut").val(),$("#txtAddUserRut"));
-// 		$.post(
-// 			base_url+"Principal/buscaUsuario",
-// 			{rut:$("#txtAddUserRut").val()},
-// 			function(data){
-// 				console.log(data);
-// 				$("#txtAddUserNombre").val(data[0].nombre);
-// 				$("#txtAddUserClave").val('');
-// 				$("#txtAddUserFNac").val(data[0].fnac);
-// 				$("#txtAddUserEspecialidad").val(data[0].especialidad);
-// 				$("#txtAddUserCargo").val(data[0].rol);
-// 			},'json');
-// 	});
-// }
+
 </script>

@@ -19,7 +19,6 @@
 			<?php endforeach;?>
 		</table>
 	</div>
-
 	<div class="col-12">
 		<div class="col-12 mt-4">
 			<h3 class="text-center">Montos final de ingresos/egresos por día</h3>
@@ -28,13 +27,17 @@
 			<th>Fecha</th>
 			<th>Ingresos totales</th>
 			<th>Egreso totales</th>
-			<!-- <th></th>
-			<th></th>
-			<th></th> -->
-			<tr>
-			<td><text>$10.000</text></td>
-			<td><text>$20.000</text></td>
-			</tr>
+			<?php foreach($fechas as $elemento):?>
+				<?php foreach($elemento as $row):?>
+					<tr>
+					<td><text><?=$row->fecha?></text></td>
+					<td><text> $ <?=$row->ingreso?></text></td>
+					<td><text>$ <?=$row->egreso?></text></td>
+					</tr> 
+				<?php endforeach;?>
+			<?php endforeach;?>
+
+		
 		</table>
 	</div>
 </div>
@@ -44,6 +47,4 @@
 	function verDivAddUser(){
 		$("#divAddUser").toggle('fast');
 	}
-
-	
 </script>

@@ -192,8 +192,21 @@ class Principal extends CI_Controller {
 		$res['users'] = $this->Modelo->listarUsers();
 		$this->load->view("newUser",$res);
 	}
+	/**
+	 * Se envia informacion con respecto a los usuarios, ademas, se envia un lista 
+	 * que contiene la suma de ingresos y ingresos todales diarios ordenasdos por fecha
+	 */
 	function Documento(){
+		$array = array();
+			$fechas = $this->Modelo->obtenerListaFechas();
+		foreach ($fechas as $row) {
+			$fechaActual = $row->fecha;
+			array_push($array, $this->Modelo->calcularIngresoEgresoDiario($fechaActual)  );
+		}
+		$res['fechas'] =$array;//$array;
+
 		$res['users'] = $this->Modelo->listarUsers();
+	
 		$this->load->view("Documento",$res);
 	}
 	
@@ -231,13 +244,6 @@ class Principal extends CI_Controller {
 		$res = $this->Modelo->buscaUsuario($rut);
 		echo json_encode($res);
 	}
-
-	function calcularIngresoEgresoDiario(){
-		$res['ingreso'] = $this->Modelo->calcularIngresoDiario();
-		$res['egreso'] = $this->Modelo->calcularEgresoDiario();
-		echo json_encode($res);
-	}
-
 
 	function cambiarEstadoUser(){
 		$estado = $this->input->post("estado");
