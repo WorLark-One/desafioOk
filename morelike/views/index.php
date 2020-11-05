@@ -59,18 +59,17 @@
 				<text style="color:#128c7e">Bienvenid@ <button type="button" class="btn" style="border:1px solid black;" onclick="openModal()"><?=$this->session->userdata("nombre")?></button></text>
 				<a href="Salida" class="btn btn-info"><i class="fas fa-sign-out-alt"></i></a><br><text style="font-size: 9px;color:#34b7f1">Último acceso: <?=$this->session->userdata("acceso")?></text>
 			</div>
-	    </div>
-	  	<div class="row text-center" id="botonesAreas">
-	  		<div class="col-12">
-			<h1>hola</h1>
-	  		<select id="selectCentros" onchange="entrarArea()" style="width: 100%;">
-	  			<option selected disabled></option>
-	  			<?php for($i=0;$i<sizeof($this->session->userdata("areas"));$i++):?>
-	  				<option value="<?=$this->session->userdata("idAreas")[$i];?>"><?=$this->session->userdata("areas")[$i];?></option>
-	  			<?php endfor;?>	
-	  		</select>
-	  		</div>
-	  		<hr>
+		</div>
+		<div class="row text-center" id="botonesAreas">
+			<div class="col-12">
+			<select id="selectCentros" onchange="entrarArea()" style="width: 100%;">
+				<option selected disabled></option>
+				<?php for($i=0;$i<sizeof($this->session->userdata("areas"));$i++):?>
+					<option value="<?=$this->session->userdata("idAreas")[$i];?>"><?=$this->session->userdata("areas")[$i];?></option>
+				<?php endfor;?>	
+			</select>
+			</div>
+			<hr>
 			<?php if($this->session->userdata("super")=="Administrador"):?>  
 				<div class="col-12">
 					<button class="btn btn-nuevo " style="width: 100%; height: 100px;" onclick="nuevoProcedimiento()">
