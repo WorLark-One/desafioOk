@@ -1,18 +1,12 @@
 <div class="row">
-	<div class="col-sm">
-		<table class="table table-striped">
+	<div class="col-6">
 			<th>Ingresos</th>
 			<th>Egreso</th>
-			<!-- <th></th>
-			<th></th>
-			<th></th> -->
 	
 			<tr>
 			<td><text>$10.000</text></td>
 			<td><text>$20.000</text></td>
-			<tr>
-
-		</table>
+	
 	</div>
 </div>
 <div class="row">
