@@ -196,6 +196,7 @@ class Principal extends CI_Controller {
 		$res['users'] = $this->Modelo->listarUsers();
 		$this->load->view("Documento",$res);
 	}
+	
 	/**
 	 * registra un nuevo usuario en la base de datos
 	 */
@@ -230,6 +231,14 @@ class Principal extends CI_Controller {
 		$res = $this->Modelo->buscaUsuario($rut);
 		echo json_encode($res);
 	}
+
+	function calcularIngresoEgresoDiario(){
+		$res['ingreso'] = $this->Modelo->calcularIngresoDiario();
+		$res['egreso'] = $this->Modelo->calcularEgresoDiario();
+		echo json_encode($res);
+	}
+
+
 	function cambiarEstadoUser(){
 		$estado = $this->input->post("estado");
 		$id 	= $this->input->post("id");
