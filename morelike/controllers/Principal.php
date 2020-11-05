@@ -193,7 +193,8 @@ class Principal extends CI_Controller {
 		$this->load->view("newUser",$res);
 	}
 	function Documento(){
-		$this->load->view("Documento");
+		$res['users'] = $this->Modelo->listarUsers();
+		$this->load->view("Documento",$res);
 	}
 	/**
 	 * registra un nuevo usuario en la base de datos
