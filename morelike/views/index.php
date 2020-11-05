@@ -102,8 +102,15 @@
 					</button>
 					<hr>
 				</div>
-
+			<?php elseif($this->session->userdata("super")=="Funcionario"):?>
+				<div class="col-12">
+					<button class="btn btn-nuevo " style="width: 100%; height: 100px;" onclick="nuevoProcedimiento()">
+						<i class="fas fa-file-medical fa-3x"></i>
+					</button>
+					<hr>
+				</div>
 			<?php endif;?>
+
 		</div>
 	</div>
 	<div class="container" id="contenedor" style="display: none;">

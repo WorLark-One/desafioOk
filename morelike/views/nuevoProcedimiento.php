@@ -64,7 +64,9 @@
 				<th>Ingreso</th>
 				<th>Egreso</th>
 				<th>Saldo</th>
+				<?php if($this->session->userdata("super")=="Administrador"):?>
 				<th>Opciones</th>
+				<?php endif;?>	
 				</thead>
 				<tbody>
 				<?php foreach($data as $row):?>
@@ -72,6 +74,7 @@
 					<td idate>
 					<?=substr($row->fecha,0,10)?>
 					</td>
+					<?php if($this->session->userdata("super")=="Administrador"):?>  
 					<td>
 						<input type="text" class="form-control" id="descripcion<?=$row->id?>" value="<?=$row->descripcion?>"/>
 					</td>
@@ -81,11 +84,23 @@
 					<td>
 						<input type="text" class="form-control" onkeyup="separador(this)" id="egreso<?=$row->id?>" value="<?=number_format($row->egreso,0,",",".")?>"/>
 					</td>
+					<?php elseif($this->session->userdata("super")=="Funcionario"):?>
+					<td>
+						<?=$row->descripcion?>
+					</td>
+					<td>
+						<?=number_format($row->ingreso,0,",",".")?>
+					</td>
+					<td>
+						<?=number_format($row->egreso,0,",",".")?>
+					</td>
+					<?php endif;?>	
 					<?php if($row->saldo>0):?>
 					<td class="btn-success"><?=number_format($row->saldo,0,",",".")?></td>
 					<?php else:?>
 					<td class="btn-danger"><?=number_format($row->saldo,0,",",".")?></td>
 					<?php endif;?>
+					<?php if($this->session->userdata("super")=="Administrador"):?>  
 					<td>
 						<span title="Guardar edición">
 							<button class="btn btn-info"   onclick="editarRegistro(<?=$row->id?>)">
@@ -98,6 +113,7 @@
 						</button>
 						</span>
 					</td>
+					<?php endif;?>	
 				</tr>
 				<?php endforeach;?>
 				</tbody>
