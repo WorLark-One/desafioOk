@@ -1,106 +1,54 @@
 <div class="row">
-	<div class="col">
-		<h3 class="text-center">Informe</h3>
-		
+	<div class="col-sm">
+		<table class="table table-striped">
+			<th>Ingresos</th>
+			<th>Egreso</th>
+			<!-- <th></th>
+			<th></th>
+			<th></th> -->
+	
+			<tr>
+			<td><text>$10.000</text></td>
+			<td><text>$20.000</text></td>
+			<tr>
+
+		</table>
 	</div>
 </div>
-
+<div class="row">
+	<div class="col">
+		<table class="table table-striped">
+			<th>Rut</th>
+			<th>Nombre</th>
+			<th>Rol</th>
+			<th>Especialidad</th>
+			<th>Ultimo acceso</th>
+			<th>Ingreso final</th>
+			<th>EgresoFinal</th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<?php foreach($users as $row):?>
+				<?php if($row->rol !="Administrador"):?>  
+				
+					<tr>
+					<td><text><?=$row->rut?></text></td>
+					<td><text><?=$row->nombre?></text></td>
+					<td><text><?=$row->rol?></text></td>
+					<td><text><?=$row->especialidad?></text></td>
+					<td><text><?=$row->acceso?></text></td>
+					</td> 
+				<?php endif;?>
+			<?php endforeach;?>
+		</table>
+	</div>
+</div>
 <script type="text/javascript" src="js/rut.js"></script>
 <script type="text/javascript">
 	$(document).ready()
 	function verDivAddUser(){
 		$("#divAddUser").toggle('fast');
 	}
-	/**
-	*registra un nuevo usuario en la base de datos.
-	 */
-	function addNewUser(){
-		//accede directamente a las variables.
-		addUser(
-			$("#txtAddUserRut").val(),
-			$("#txtAddUserNombre").val(),
-			$("#txtAddUserClave").val(),
-			$("#txtAddUserFNac").val(),
-			$("#txtAddUserEspecialidad").val(),
-			$("#txtAddUserCargo").val(),
-			0,
-			0
-		);
-	}
-	// edita la informacion de un usuario.
-	function editarUsuario(id){
-		console.log("editar usuario");
-		//obtenimos los datos
-		var rut = $("#rutEditado"+id).val();
-		var nombre = $("#nombreEditado"+id).val();
-		var clave = $("#claveEditado"+id).val();
 
-		$.post(base_url+"Principal/editarUsuario",{
-			id:id,
-			rut:rut,
-			nombre:nombre,
-			clave:clave
-		},function(){
-			$("#contenedor").hide("fast");
-			nuevoUser();
-		});
-	}
-
-	function cambiarEstadoUser(estado, id){
-		$.post(base_url+"Principal/cambiarEstadoUser",{estado:estado,id:id},function(){
-			$("#contenedor").hide("fast");
-			nuevoUser();
-		});
-	}
-	//**Obtienen un usuario a traves de su identificador */
-	function obtenerUsuario(id){
-		$.post(base_url+"Principal/obtenerUsuario",{
-			id:id
-		},function(res){
-			console.log(res);
-			console.log(res['res'][0]['nombre']);
-		},'json');
-	}
-	/**
-	 * Elimina el registro de un usuario.
-	 */
-	function eliminarUsuario(id ){
-		$.post(base_url+"Principal/eliminarUsuario",{
-			id:id
-		},function(res){
-			if(res.error == false){
-				$("#mensajeError").html("<p>Usuario ya existente o datos no válidos</p>");
-				$("#mensajeError").show('fast');
-			}else{
-				
-				nuevoUser();
-			}
-		},'json');
-	}
-
-	/**
-	 * Registra un nuevo usuario en la base de datos, valida a través del
-	 * rut si el usuario se encuentra registrado.
-	 */
-	function addUser(rut, nombre, clave,fNac,especialidad, cargo, op, id){
-		$.post(base_url+"Principal/addNewUser",{
-			rut:rut,
-			nombre:nombre,
-			clave:clave,
-			fNac:fNac,
-			especialidad:especialidad,
-			cargo:cargo,
-			op:op,
-			id:id
-		},function(res){
-			if(res.error == true){
-				$("#mensajeError").html("<p>Usuario ya existente o datos no válidos</p>");
-				$("#mensajeError").show('fast');
-			}else{
-				$("#contenedor").hide("fast");
-				nuevoUser();
-			}
-		},'json');
-	}
-
+	
 </script>
