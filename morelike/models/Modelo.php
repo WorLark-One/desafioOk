@@ -263,11 +263,11 @@ class Modelo extends CI_Model{
 	 }
 	 function calcularIngresoDiario(){
 		$sql =  "SELECT SUM(ingreso) from `registros` WHERE fecha > DATE_SUB(NOW(), INTERVAL 1 DAY)";
-		return $this->db->query($sql)->result();;
+		return $this->db->query($sql)->result();
 	 }
 	 function calcularEgresoDiario(){
 		$sql =  "SELECT SUM(egreso) from `registros` WHERE fecha > DATE_SUB(NOW(), INTERVAL 1 DAY)";
-		return $this->db->query($sql)->result();;
+		return $this->db->query($sql)->result();
 	 }
 
 	 function eliminarUsuario($id){

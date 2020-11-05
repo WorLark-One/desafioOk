@@ -194,6 +194,8 @@ class Principal extends CI_Controller {
 	}
 	function Documento(){
 		$res['users'] = $this->Modelo->listarUsers();
+		// $res['ingreso'] = 100;//$this->Modelo->calcularIngresoDiario();
+		// $res['egreso'] = $this->Modelo->calcularEgresoDiario();
 		$this->load->view("Documento",$res);
 	}
 	
