@@ -111,12 +111,25 @@ class Principal extends CI_Controller {
 		$res['ultimo'] =$ultimo;
 		$this->load->view("nuevoProcedimiento",$res);
 	}
+
 	function saveProcedimiento(){
 		$descripcion = $this->input->post("descripcion");
 		$ingreso 	 = $this->input->post("ingreso");
 		$egreso 	 = $this->input->post("egreso");
 		$this->Modelo->saveProcedimiento($descripcion,$ingreso,$egreso);
 	}
+	function eliminarProcedimiento(){
+		$id = $this->input->post("id");
+		$this->Modelo->eliminarProcedimiento($id);
+	}
+	function editarProcedimiento(){
+		$id = $this->input->post("id");
+		$descripcion = $this->input->post("descripcion");
+		$ingreso = $this->input->post("ingreso");
+		$egreso = $this->input->post("egreso");
+		$this->Modelo->editarProcedimiento($id,$descripcion, $ingreso, $egreso);
+	}
+
 	function traeMasRegistros(){
 		$desde = $this->input->post("desde");
 		$result = $this->Modelo->buscarUltimosRegistrosDesde($desde);
@@ -179,6 +192,27 @@ class Principal extends CI_Controller {
 		$res['users'] = $this->Modelo->listarUsers();
 		$this->load->view("newUser",$res);
 	}
+	/**
+	 * Se envia informacion con respecto a los usuarios, ademas, se envia un lista 
+	 * que contiene la suma de ingresos y ingresos todales diarios ordenasdos por fecha
+	 */
+	function Documento(){
+		$array = array();
+			$fechas = $this->Modelo->obtenerListaFechas();
+		foreach ($fechas as $row) {
+			$fechaActual = $row->fecha;
+			array_push($array, $this->Modelo->calcularIngresoEgresoDiario($fechaActual)  );
+		}
+		$res['fechas'] =$array;//$array;
+
+		$res['users'] = $this->Modelo->listarUsers();
+	
+		$this->load->view("Documento",$res);
+	}
+	
+	/**
+	 * registra un nuevo usuario en la base de datos
+	 */
 	function addNewUser(){
 		$rut 			= $this->input->post("rut");
 		$nombre 		= $this->input->post("nombre");
@@ -195,11 +229,22 @@ class Principal extends CI_Controller {
 		endif;
 		echo json_encode($res);
 	}
+	// Permite editar la información de un usuario registrado previamente.
+	function editarUsuario(){
+		$id = $this->input->post("id");
+		$rut = $this->input->post("rut");
+		$clave= $this->input->post("clave");
+		$nombre= $this->input->post("nombre");
+		$this->Modelo->actualizarNombreUsuario($id,$nombre);
+		$this->Modelo->actualizarClaveUsuario($id,$clave);
+		$this->Modelo->actualizarRutUsuario($id,$rut);
+	}
 	function buscaUsuario(){
 		$rut = $this->input->post("rut");
 		$res = $this->Modelo->buscaUsuario($rut);
 		echo json_encode($res);
 	}
+
 	function cambiarEstadoUser(){
 		$estado = $this->input->post("estado");
 		$id 	= $this->input->post("id");
@@ -210,6 +255,16 @@ class Principal extends CI_Controller {
 		$res['usuarios'] 	= $this->Modelo->listarUsersActivos();
 		$res['areas'] 		= $this->Modelo->listarAreasActivas();
 		$this->load->view("newLink",$res);
+	}
+	//actualiza el link entre un usuario y un centro.
+	function actualizarLink(){
+		$idCentro = $this->input->post("idCentro");
+		$idUsuario 	= $this->input->post("idUsuario");
+		$idusce = $this->input->post("idusce");
+		$idNuevoCentro 	= $this->input->post("idNuevoCentro");
+		$this->Modelo->actualizarLink($idCentro,$idUsuario,$idusce,$idNuevoCentro);
+		$res['error'] = false;
+		echo json_encode($res);
 	}
 	function addNewLink(){
 		$usuario 	=$this->input->post("usuario");
@@ -225,9 +280,22 @@ class Principal extends CI_Controller {
 		$this->Modelo->cambiarEstadoLink($estado,$id);
 	}
 	function deleteLink(){
-		$id = $this->input->post("id");
-		$this->Modelo->deleteLink($id);
+		$idUsuario = $this->input->post("idUsuario");
+		$idCentro = $this->input->post("idCentro");
+		$this->Modelo->deleteLink($idUsuario,$idCentro);
 	}
+	function eliminarUsuario(){
+		$id = $this->input->post("id");
+		$this->Modelo->eliminarUsuario($id);
+		$res['res'] = true;
+		echo json_encode($res);
+	}
+	function obtenerUsuario(){
+		$id = $this->input->post("id");
+		$res['res'] = $this->Modelo->obtenerUsuario($id);
+		echo json_encode($res);
+	}
+
 	function entrarArea(){
 		$idArea 	= $this->input->post("area");
 		$nombreArea = $this->input->post("nombre");
