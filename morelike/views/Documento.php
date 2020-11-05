@@ -1,40 +1,18 @@
 <div class="row">
-	<div class="col">
-		<h3 class="text-center">Informe</h3>
-		<hr>
-		<button type="button" class="btn btn-dark" onclick="verDivAddUser()"><i class="fas fa-plus-circle fa-2x"></i></button>
-		<div class="row mb-3" id="divAddUser" style="display: none;">
-			<div class="col-4">
-			  <input type="text" class="form-control" placeholder="Rut" aria-label="Rut Usuario" id="txtAddUserRut" maxlength="12">
-			</div>
-			<div class="col-4">
-			  <input type="text" class="form-control" placeholder="Nombre" aria-label="Nombre Usuario" id="txtAddUserNombre">
-			</div>
-			<div class="col-4">
-			  <input type="password" class="form-control" placeholder="Clave" aria-label="Clave Usuario" id="txtAddUserClave">
-			</div>
-			<div class="col-4">
-			  <input type="date" class="form-control" placeholder="Fecha Nacimiento" aria-label="Fecha Nacimiento" id="txtAddUserFNac">
-			</div>
-			<div class="col-4">
-			  <select class="form-control" placeholder="Especialdad" aria-label="Especialidad" id="txtAddUserEspecialidad">
-			  	<option selected disabled>Especialidad</option>
-			  	<option value="Enfermeria">Enfermeria</option>
-				  <option value="TENS">TENS</option>
-			  </select>
-			</div>
-			<div class="col-4">
-			  <select class="form-control" placeholder="Cargo" aria-label="Cargo" id="txtAddUserCargo">
-			  	<option selected disabled>Cargo</option>
-			  	<option value="Funcionario">Funcionario</option>
-			  	<option value="Administrador">Administrador</option>
-			  </select>
-			</div>
-			<div class="col-12">
-			  <button class="btn btn-success" onclick="addNewUser()" style="width: 100%;"><i class="far fa-check-square"></i></button>
-			</div>
-		</div>
-		<div style="display: none;" id="mensajeError" class="btn-danger text-center"></div>
+	<div class="col-sm">
+		<table class="table table-striped">
+			<th>Ingresos</th>
+			<th>Egreso</th>
+			<!-- <th></th>
+			<th></th>
+			<th></th> -->
+	
+			<tr>
+			<td><text>$10.000</text></td>
+			<td><text>$20.000</text></td>
+			<tr>
+
+		</table>
 	</div>
 </div>
 <div class="row">
@@ -45,6 +23,8 @@
 			<th>Rol</th>
 			<th>Especialidad</th>
 			<th>Ultimo acceso</th>
+			<th>Ingreso final</th>
+			<th>EgresoFinal</th>
 			<th></th>
 			<th></th>
 			<th></th>
