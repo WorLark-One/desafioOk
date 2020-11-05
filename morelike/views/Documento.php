@@ -25,8 +25,9 @@
 			<h3 class="text-center">Montos final de ingresos/egresos por día</h3>
 		</div>
 		<table class="table table-striped mt-4">
-			<th>Ingresos</th>
-			<th>Egreso</th>
+			<th>Fecha</th>
+			<th>Ingresos totales</th>
+			<th>Egreso totales</th>
 			<!-- <th></th>
 			<th></th>
 			<th></th> -->
