@@ -64,7 +64,9 @@
 				<th>Ingreso</th>
 				<th>Egreso</th>
 				<th>Saldo</th>
+				<?php if($this->session->userdata("super")=="Administrador"):?>
 				<th>Opciones</th>
+				<?php endif;?>	
 				</thead>
 				<tbody>
 				<?php foreach($data as $row):?>
@@ -72,6 +74,7 @@
 					<td idate>
 					<?=substr($row->fecha,0,10)?>
 					</td>
+					<?php if($this->session->userdata("super")=="Administrador"):?>  
 					<td>
 						<input type="text" class="form-control" id="descripcion<?=$row->id?>" value="<?=$row->descripcion?>"/>
 					</td>
@@ -81,11 +84,23 @@
 					<td>
 						<input type="text" class="form-control" onkeyup="separador(this)" id="egreso<?=$row->id?>" value="<?=number_format($row->egreso,0,",",".")?>"/>
 					</td>
+					<?php elseif($this->session->userdata("super")=="Funcionario"):?>
+					<td>
+						<?=$row->descripcion?>
+					</td>
+					<td>
+						<?=number_format($row->ingreso,0,",",".")?>
+					</td>
+					<td>
+						<?=number_format($row->egreso,0,",",".")?>
+					</td>
+					<?php endif;?>	
 					<?php if($row->saldo>0):?>
 					<td class="btn-success"><?=number_format($row->saldo,0,",",".")?></td>
 					<?php else:?>
 					<td class="btn-danger"><?=number_format($row->saldo,0,",",".")?></td>
 					<?php endif;?>
+					<?php if($this->session->userdata("super")=="Administrador"):?>  
 					<td>
 						<span title="Guardar edición">
 							<button class="btn btn-info"   onclick="editarRegistro(<?=$row->id?>)">
@@ -98,6 +113,7 @@
 						</button>
 						</span>
 					</td>
+					<?php endif;?>	
 				</tr>
 				<?php endforeach;?>
 				</tbody>
@@ -136,52 +152,51 @@
 <script type="text/javascript" src="js/rut.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
-		 $.datepicker.regional['es'] = {
-			 closeText: 'Cerrar',
-			 prevText: '< Ant',
-			 nextText: 'Sig >',
-			 currentText: 'Hoy',
-			 monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-			 monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-			 dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-			 dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-			 dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-			 weekHeader: 'Sm',
-			 dateFormat: 'yy-mm-dd',
-			 firstDay: 1,
-			 isRTL: false,
-			 showMonthAfterYear: false,
-			 yearSuffix: ''
-	 	};
-	 	$.datepicker.setDefaults($.datepicker.regional['es']);
-	      from = $( "#from" )
-	        .datepicker({
-	          //defaultDate: "+1w",
-	          changeMonth: true,
-	          numberOfMonths: 1
-	        })
-	        .on( "change", function() {
-	          to.datepicker( "option", "minDate", getDate( this ) );
-	        }),
-	      to = $( "#to" ).datepicker({
-	        defaultDate: "+1w",
-	        changeMonth: true,
-	        numberOfMonths: 1
-	      })
-	      .on( "change", function() {
-	        from.datepicker( "option", "maxDate", getDate( this ) );
-	      });
-	 
-	    function getDate( element ) {
-	      var date;
-	      try {
-	        date = $.datepicker.parseDate( dateFormat, element.value );
-	      } catch( error ) {
-	        date = null;
-	      }
-	 
-	      return date;
-	    }
+		$.datepicker.regional['es'] = {
+			closeText: 'Cerrar',
+			prevText: '< Ant',
+			nextText: 'Sig >',
+			currentText: 'Hoy',
+			monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+			monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+			dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+			dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+			dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+			weekHeader: 'Sm',
+			dateFormat: 'yy-mm-dd',
+			firstDay: 1,
+			isRTL: false,
+			showMonthAfterYear: false,
+			yearSuffix: ''
+		};
+		$.datepicker.setDefaults($.datepicker.regional['es']);
+			from = $( "#from" )
+			.datepicker({
+			//defaultDate: "+1w",
+			changeMonth: true,
+			numberOfMonths: 1
+			})
+			.on( "change", function() {
+			to.datepicker( "option", "minDate", getDate( this ) );
+			}),
+			to = $( "#to" ).datepicker({
+				defaultDate: "+1w",
+				changeMonth: true,
+				numberOfMonths: 1
+			})
+			.on( "change", function() {
+				from.datepicker( "option", "maxDate", getDate( this ) );
+			});
+	
+		function getDate( element ) {
+			var date;
+			try {
+				date = $.datepicker.parseDate( dateFormat, element.value );
+			} catch( error ) {
+				date = null;
+			}
+			return date;
+		}
 	});
 	function separador(input){
         var num = input.value.replace(/\./g,"");
@@ -235,18 +250,6 @@
 			//coincidencias
 			const lastTR=tableReg.rows[tableReg.rows.length-1];
 			const td=lastTR.querySelector("td");
-			//lastTR.classList.remove("hide", "red");
-			//if (total == 0) {
-				//lastTR.classList.add("red");
-				//td.innerHTML="No se han encontrado coincidencias";
-			//}
-				//lastTR.classList.add("hide");
-			//} else if (total) {
-				//td.innerHTML="Se ha encontrado "+total+" coincidencia"+((total>1)?"s":"");
-			//} else {
-				//lastTR.classList.add("red");
-				//td.innerHTML="No se han encontrado coincidencias";
-			//}
 		}
 		
 	}
@@ -260,50 +263,14 @@
 		document.getElementById("from").value = "";
 		document.getElementById("to").value = "";
 	}
-	function showResponse(responseText, statusText, xhr, $form){
-		var res = JSON.parse(responseText);
-		$("#nombreOrden").val(res.nombre);
-		if(res.estado=="ok"){
-			$("#imagenMsj").html("<p>Orden Almacenada</p>");
-			$("#imagenMsj").addClass("btn-success");
-			$("#imagenMsj").removeClass("btn-danger");
-		}else{
-			$("#imagenMsj").html(res.error);
-			$("#imagenMsj").addClass("btn-danger");
-			$("#imagenMsj").removeClass("btn-success");
-		}
-		$("#imagenMsj").show();
-	}
-	
-	function buscarPacienteRut(){
-		var rut = $("#rutPacienteBusqueda").val();
-		$.post(base_url+"Principal/buscarPacienteRut",{rut:rut},
-			function(data){
-				$("#nombrePaciente").val(data[0].nombre);
-				$("#apellidosPaciente").val(data[0].apellido);
-				$("#fNacimiento").val(data[0].fNac);
-				$("#edadPaciente").val(data[0].edad);
-				$("#telefonoPaciente").val(data[0].telefono);
-				$("#emailPaciente").val(data[0].correo);
-				$("#direccionPaciente").val(data[0].domicilio);
-			},'json')
-	}
-	function calcularEdad(){
-		var fNac = $("#fNacimiento").val();
-		var birthday_arr = fNac.split("-");
-	    var birthday_date = new Date(birthday_arr[0], birthday_arr[1] - 1, birthday_arr[2]);
-	    var ageDifMs = Date.now() - birthday_date.getTime();
-	    //alert(ageDifMs);
-	    var ageDate = new Date(ageDifMs);
-	    var edad = Math.abs(ageDate.getUTCFullYear() - 1970);
-		$("#edadPaciente").val(edad);
-	}
+	//eliminada function showResponse(responseText, statusText, xhr, $form)
+	//eliminada function buscarPacienteRut()
+	//eliminada function calcularEdad()
+
 	function guardarNuevoProcedimiento(){
-		
 		var descripcion = $("#descripcion").val();
 		var ingreso = ($("#ingreso").val().split(".")).join("");
 		var egreso = ($("#egreso").val().split(".")).join("");
-
 		var validation = {
 		    isEmailAddress:function(str) {
 		        var pattern =/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -391,26 +358,8 @@
 			},'json'
 		);
 	}
-	function saveImagen(id,archivo,nombre){
-		$.ajax({
-			url:base_url+"Principal/saveImagen",
-			type:"post",
-			data:{file:archivo, id:id, nombre:nombre},
-			processData:false,
-			contentType:false,
-			cache:false,
-			async:false,
-			success: function(data){
-				alert("Upload Image Successful.");
-			}
-		});
-		/*$.post(
-	  		base_url+"Principal/saveImagen",
-	  		{
-	  			id:id, archivo:archivo, nombre:nombre
-	  		}
-  		);*/
-	}
+	//eliminada function saveImagen(id,archivo,nombre)
+
 	function editarRegistro(id){
 		//alert("Falta registrar Ingreso o Egreso");
 		var descripcion = $("#descripcion"+id).val();
@@ -428,7 +377,6 @@
 			else{
 				ingreso = ingreso.concat(element);
 			}
-
 		}
 		for (let index = 0; index < valorEgreso.length; index++) {
 			const element = valorEgreso[index];
@@ -439,7 +387,6 @@
 				egreso = egreso.concat(element);
 			}
 		}
-
 		console.log("descripcion "+descripcion);
 		console.log("ingreso "+ingreso);
 		console.log("egreso "+egreso);

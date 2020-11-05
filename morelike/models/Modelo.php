@@ -259,16 +259,31 @@ class Modelo extends CI_Model{
 	 function actualizarLink($idCentro,$idUsuario,$idusce,$idNuevoCentro){
 		$sql =  "UPDATE usce SET idce = '$idNuevoCentro' WHERE id = $idusce ;";
 		$this->db->query($sql);
+		
 		return true;
 	 }
-	 function calcularIngresoDiario(){
-		$sql =  "SELECT SUM(ingreso) from `registros` WHERE fecha > DATE_SUB(NOW(), INTERVAL 1 DAY)";
+
+	 function obtenerListaFechas(){
+			$sql =  "SELECT DISTINCT CAST(fecha AS DATE) as fecha FROM `registros` ORDER BY fecha DESC";
+			return $this->db->query($sql)->result();
+		 }
+
+	 function calcularIngresoEgresoDiario($fechaActual){
+		$sql =  "SELECT CAST(fecha AS DATE) as fecha, SUM(ingreso)as ingreso, SUM(egreso) as egreso from `registros` WHERE CAST(fecha AS DATE) = '".$fechaActual."'";
+		// console.log($sql);
 		return $this->db->query($sql)->result();
 	 }
-	 function calcularEgresoDiario(){
-		$sql =  "SELECT SUM(egreso) from `registros` WHERE fecha > DATE_SUB(NOW(), INTERVAL 1 DAY)";
-		return $this->db->query($sql)->result();
+
+	 function obtenerFechasIngresosEgresos(){
+		$array = array();
+		$fechas =$this-> obtenerListaFechas();
+		foreach ($fechas as $row) {
+			$fechaActual = $row->fecha;
+			array_push($array, $this->calcularIngresoEgresoDiario($fechaActual)  );
+		}
+		return $array;//$array;
 	 }
+	 
 
 	 function eliminarUsuario($id){
 		$sql = "Delete From Usuario where id =".$id;
