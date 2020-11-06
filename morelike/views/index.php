@@ -117,65 +117,14 @@
 	</div>
 </body>
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Cambiar Contraseña</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-        	<div class="form-group">
-			    <label for="claveVieja">Clave anterior</label>
-			    <input type="password" class="form-control" id="claveVieja" aria-describedby="txtClave" placeholder="Clave anterior" onblur="validaClave0();">
-			    <small id="txtClave" class="form-text" style="color:red;">Obligatorio</small>
-			  </div>
-			  <div class="form-group">
-			    <label for="claveNueva1">Clave nueva</label>
-			    <input type="password" class="form-control" id="claveNueva1" placeholder="Clave nueva" onblur="validaClave1();">
-			    <input type="password" class="form-control" id="claveNueva2" placeholder="Repita su clave nueva" onblur="validaClave2();">
-			  </div>
-        </form>
-        <p id="msjModal" class="btn-danger text-center"></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" onclick="cambiarClave()">Guardar</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
+<!--eliminado <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+  
 <!-- Modal -->
-<div class="modal fade btn-danger" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
-    <h5 class="modal-title text-center" id="exampleModalLabel1">Problemas de Seguridad!</h5>
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		<span aria-hidden="true">&times;</span>
-    </button>
-	<div class="modal-body text-center">
-		<p>Por problemas de seguridad su cuenta será cerrada.</p>
-</div>
-</div>
+<!--eliminado <div class="modal fade btn-danger" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">-->
+    
 <!-- Modal -->
-<div class="modal fade btn-success" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
-    <h5 class="modal-title text-center" id="exampleModalLabel3">Cambio de Clave</h5>
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		<span aria-hidden="true">&times;</span>
-    </button>
-	<div class="modal-body text-center">
-		<p>Su clave fue modificada con éxito, por favor reingrese.</p>
-	</div>
-</div>
-<style type="text/css">
-	.dropdown-menu {
-		position:relative;
-		width:100%;
-		top: 0px !important;
-		left: 0px !important;
-    }
-</style>
+<!--eliminado <div class="modal fade btn-success" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">-->
+    
 <script charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo.min.js"></script>
 <script type="text/javascript">
@@ -205,90 +154,20 @@
 		var centro = $("#selectCentros").val();
 		$(".btnDisabled").attr("disabled",false);
 	}
-	function buscar(){
-		$("#rutPacienteBusquedaModal").val('');
-		$("#modalBusqueda").modal("show");
-	}
-	function buscarPacienteRutModal(){
-		var rut = $("#rutPacienteBusquedaModal").val();
-		rut = rut.split(" ");
-		rut = rut[0];
-		$.post(
-			base_url+"Principal/buscarFichasPaciente",
-			{
-				rut:rut
-			},
-			function(html,response){
-				buscarPacienteRut(rut);
-				$("#contenedor").html('');
-				$("#modalBusqueda").modal("hide");
-				$("#contenedor").html(html,response);
-				$("#contenedor").show('fast');
-			}
-		);
-	}
-	function buscarPacienteRut(rut){
-		$.post(base_url+"Principal/buscarPacienteRut",{rut:rut},
-			function(data){
-				$("#rutB").val(data[0].rut);
-				$("#nombreB").val(data[0].nombre);
-				$("#apellidosB").val(data[0].apellido);
-				$("#fNacB").val(data[0].fNac);
-				$("#edadB").val(data[0].edad);
-				$("#telefonoB").val(data[0].telefono);
-				$("#direccionB").val(data[0].domicilio);
-			},'json')
-	}
-	function openModal(){
-		$("#claveVieja").prop("disabled",false);
-		$("#claveNueva1").prop("disabled",false);
-		$("#claveNueva2").prop("disabled",false);
-		$("#claveVieja").val('');
-		$("#claveNueva1").val('');
-		$("#claveNueva2").val('');
-		$("#msjModal").text("");
-		$("#exampleModal").modal("show");
-	}
-	function validaClave0(){
-		if($("#claveVieja").val()!=""){
-			$.post(base_url+"Principal/validaClave0",{claveVieja: $("#claveVieja").val()},function(data){
-					if(data.res){
-						$("#claveVieja").prop("disabled",true);
-					}else{
-						$("#exampleModal").hide();
-						$("#exampleModal2").modal("show");
-						$.post(base_url+"Salida");
-						setTimeout(function(){
-						  location.reload();
-						}, 3000);
-					}
-				},'json'
-			);
-		}
-	}
-	function validaClave1(){
-		if($("#claveVieja").val() == $("#claveNueva1").val()){
-			$("#msjModal").text("Error, Su nueva clave no puede ser igual a la anterior")
-			$("#claveNueva1").focus();
-		}
-	}
-	function validaClave2(){
-		if($("#claveNueva1").val() != $("#claveNueva1").val()){
-			$("#msjModal").text("Error, su nueva clave no coincide.")
-			$("#claveNueva1").focus();
-		}else{
-			$("#claveNueva1").prop("disabled",true);
-			$("#claveNueva2").prop("disabled",true);
-		}
-	}
-	function cambiarClave(){
-		$.post(base_url+"Principal/cambiarClave",{clave:$("#claveNueva2").val()},function(){
-				$("#exampleModal").hide();
-				$("#exampleModal3").modal("show");
-				$.post(base_url+"Salida");
-				setTimeout(function(){
-				  location.reload();
-				}, 3000);
-		})
-	}
+	//eliminada function buscar(){
+		
+	//eliminada function buscarPacienteRutModal(){
+		
+	//eliminada function buscarPacienteRut(rut){
+		
+	//eliminada function openModal(){
+		
+	//eliminada function validaClave0(){
+		
+	// eliminada function validaClave1(){
+		
+	// eliminada function validaClave2(){
+		
+	// eliminada function cambiarClave(){
+		
 </script>
