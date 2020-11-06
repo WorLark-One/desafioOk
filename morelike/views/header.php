@@ -115,32 +115,7 @@
     </div>
   </div>
 </nav>
-  <!--nav class="navbar navbar-expand-lg navbar-light bg-light static-top fixed-top" style="background: white">
-      <a class="navbar-brand js-scroll-trigger AA" href="#inicio" style=" width: 20%;">
-        <img id="logoMV" src="<?php =base_url()?>img/logo1.png" style="width: 30%;" alt="">
-      </a>
-      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        Menu
-        <i class="fas fa-bars"></i>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav text-uppercase ml-auto">
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#equipo">Equipo</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger"  href="#examenes">Servicios</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger"  href="#contact">Contacto</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger"  href="Intranet">Intranet</a>
-          </li>
-        </ul>
-      </div>
-    
-  </nav-->
+
 
   <!-- Header -->
   <header class="masthead">
