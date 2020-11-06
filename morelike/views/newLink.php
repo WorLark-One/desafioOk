@@ -18,13 +18,6 @@
 			  	<?php endforeach;?>
 			  </select>
 			</div>
-			<!--div class="col-3">
-			  <select class="form-control" placeholder="Rol" aria-label="Rol" id="selectAddRolLink">
-			  	<option value="0" selected disabled>Rol</option>
-			  	<option value="1">Usuario</option>
-			  	<option value="2">Editor</option>
-			  </select>
-			</div-->
 			<div class="col-4">
 			  <button class="btn btn-success" onclick="addNewLink()" style="width: 100%;"><i class="far fa-check-square"></i></button>
 			</div>
@@ -39,6 +32,8 @@
 			<th>Área</th>
 			<th>Rol</th>
 			<th>Estado</th>
+			<th>Modificar</th>
+			<th>Eliminar</th>
 			<th></th>
 			<th></th>
 			<?php foreach($links as $row):?>
@@ -103,23 +98,63 @@
 			nuevoLink();
 		});
 	}
+
+	//edita la relacion entre un centro y un usuario
 	function editLink(idCentro,idUsuario,idusce){
-		var idNuevoCentro = $("#area"+idusce).val();
-		$.post(base_url+"Principal/actualizarLink",{
-			idCentro :idUsuario,
+		 var idNuevoCentro = $("#area"+idusce).val();
+		// var existe= verificarLink(idNuevoCentro,idUsuario,idusce);
+		$.post(base_url+"Principal/verificarLink",{
+			idNuevoCentro :idNuevoCentro,
 			idUsuario 	:idUsuario,
-			idusce 	:idusce,
-			idNuevoCentro:idNuevoCentro
+			idusce 	:idusce
 		},function(res){
-			if(res.error == true){
-				$("#mensajeError").html("<p>Asignación ya existente</p>");
-				$("#mensajeError").show('fast');
+			if(res.res.length >= 1){
+				$.post(base_url+"Principal/actualizarLink",{
+				idCentro :idCentro,
+				idUsuario 	:idUsuario,
+				idusce 	:idusce,
+				idNuevoCentro:idNuevoCentro
+			},function(res){
+				if(res.error == true){
+					$("#mensajeError").html("<p>Asignación ya existente</p>");
+					$("#mensajeError").show('fast');
+				}else{
+					$("#contenedor").hide("fast");
+					nuevoLink();
+				}
+			},'json');
+
 			}else{
 				$("#contenedor").hide("fast");
-				nuevoLink();
+					nuevoLink();
+			}
+		},'json');
+
+	}
+
+	function verificarLink(idNuevoCentro,idUsuario,idusce){
+		console.log("estoy");
+		console.log(idusce);
+		console.log(idNuevoCentro);
+		console.log(idUsuario);
+		$.post(base_url+"Principal/verificarLink",{
+			idNuevoCentro :idNuevoCentro,
+			idUsuario 	:idUsuario,
+			idusce 	:idusce
+		},function(res){
+			console.log("respuesta");
+			console.log(res);
+			console.log(res.res.length);
+			if(res.res.length >= 1){
+				console.log("retorno true");
+				return true;
+			}else{
+				console.log("retorno false");
+				return false;
 			}
 		},'json');
 	}
+
 	function addLink(usuario,area,op,id){ //op=0 Insertar, op=1 Editar
 		$.post(base_url+"Principal/addNewLink",{
 			usuario :usuario,
@@ -142,13 +177,6 @@
     			$("#contenedor").hide("fast");
 				nuevoLink();
 			});
-		
-		// var opcion = confirm("¿Estás seguro de eliminar?\nNombre: "+$("#nombre"+id+" option:selected").text()+"\nÁrea: "+$("#area"+id+" option:selected").text()+"\nRol:"+$("#rol"+id+" option:selected").text());
-    	// if (opcion == true) {
-    	// 	$.post(base_url+"Principal/deleteLink",{id:id},function(){
-    	// 		$("#contenedor").hide("fast");
-		// 		nuevoLink();
-		// 	});
-		// }
+
 	}
 </script>
