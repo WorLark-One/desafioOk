@@ -117,15 +117,7 @@
 			nuevoUser();
 		});
 	}
-	//**Obtienen un usuario a traves de su identificador */
-	function obtenerUsuario(id){
-		$.post(base_url+"Principal/obtenerUsuario",{
-			id:id
-		},function(res){
-			console.log(res);
-			console.log(res['res'][0]['nombre']);
-		},'json');
-	}
+
 	/**
 	 * Elimina el registro de un usuario.
 	 */

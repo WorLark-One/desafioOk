@@ -116,18 +116,6 @@ class Modelo extends CI_Model{
         return $this->db->get("ficha");*/
         return $this->db->query($sql);
     }
-    /*function saveFirma($firma){
-        $data = array("firma"=>$firma);
-        $this->db->insert("firmas",$data);
-        return $this->db->insert_id();
-    }
-    function buscaFirma($id){
-        $this->db->where("id",$id);
-        $res = $this->db->get("firmas");
-        foreach ($res->result() as $row) {
-            return $row->firma;
-        }
-    }*/
     function listarAreas(){
         $this->db->select("*");
         $this->db->order_by("estado");
@@ -259,8 +247,13 @@ class Modelo extends CI_Model{
 	 function actualizarLink($idCentro,$idUsuario,$idusce,$idNuevoCentro){
 		$sql =  "UPDATE usce SET idce = '$idNuevoCentro' WHERE id = $idusce ;";
 		$this->db->query($sql);
-		
 		return true;
+		
+	 }
+
+	function verificarLinkExistente($idNuevoCentro,$idUsuario,$idusce){
+		$sql =  "SELECT id from `usce` WHERE id='$idusce' and idce='$idNuevoCentro' and idus ='$idUsuario' ;";
+		return $this->db->query($sql)->result();
 	 }
 
 	 function obtenerListaFechas(){
@@ -283,7 +276,7 @@ class Modelo extends CI_Model{
 		}
 		return $array;//$array;
 	 }
-	 
+	  
 
 	 function eliminarUsuario($id){
 		$sql = "Delete From Usuario where id =".$id;
@@ -303,8 +296,9 @@ class Modelo extends CI_Model{
         $this->historialIntranet("Tabla: usuario - Cambio de Estado User - Id: ".$id." Estado: ".$estado);
 	}
 	//Entrega una lista de todos los usuarios asociados a centros,
+	//si un centro esta oculto no lo añadira a la lista
     function listarLinks(){
-        $sql = "select usuario.id as idu, usuario.nombre, usuario.rut, usuario.estado as estadousuario, centro.id as idc, centro.nombre, centro.estado as estadocentro, usce.estado as estadousce, usce.idce, usce.id from usce join usuario on usuario.id = usce.idus join centro on centro.id = usce.idce where usuario.estado != 1 order by usuario.nombre, centro.nombre";
+        $sql = "select usuario.id as idu, usuario.nombre, usuario.rut, usuario.estado as estadousuario, centro.id as idc, centro.nombre, centro.estado as estadocentro, usce.estado as estadousce, usce.idce, usce.id from usce join usuario on usuario.id = usce.idus join centro on centro.id = usce.idce where usuario.estado != 1 and centro.estado != 1 order by usuario.nombre, centro.nombre";
         return $this->db->query($sql)->result();
     }
     function buscaLinks(){
