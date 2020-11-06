@@ -130,18 +130,18 @@ class Principal extends CI_Controller {
 		$this->Modelo->editarProcedimiento($id,$descripcion, $ingreso, $egreso);
 	}
 
-	function traeMasRegistros(){
-		$desde = $this->input->post("desde");
-		$result = $this->Modelo->buscarUltimosRegistrosDesde($desde);
-		$res['data'] = $result->result();
-		$res['cant'] = $result->num_rows();
-		$ultimo =0;
- 		foreach ($result->result() as $row) {
-			$ultimo = $row->id;
-		}
-		$res['ultimo'] =$ultimo;
-		echo json_encode($res);
-	}
+	// function traeMasRegistros(){
+	// 	$desde = $this->input->post("desde");
+	// 	$result = $this->Modelo->buscarUltimosRegistrosDesde($desde);
+	// 	$res['data'] = $result->result();
+	// 	$res['cant'] = $result->num_rows();
+	// 	$ultimo =0;
+ 	// 	foreach ($result->result() as $row) {
+	// 		$ultimo = $row->id;
+	// 	}
+	// 	$res['ultimo'] =$ultimo;
+	// 	echo json_encode($res);
+	// }
 
 	function saveImagen(){
 		$nombre = Date("YmdHis")."orden";
@@ -266,6 +266,14 @@ class Principal extends CI_Controller {
 		$res['error'] = false;
 		echo json_encode($res);
 	}
+
+	function verificarLink(){
+		$idNuevoCentro = $this->input->post("idNuevoCentro");
+		$idUsuario 	= $this->input->post("idUsuario");
+		$idusce = $this->input->post("idusce");
+		$res['res'] = $this->Modelo->verificarLinkExistente($idNuevoCentro,$idUsuario,$idusce);
+		echo json_encode($res);
+	}
 	function addNewLink(){
 		$usuario 	=$this->input->post("usuario");
 		$area 		=$this->input->post("area");
@@ -288,11 +296,6 @@ class Principal extends CI_Controller {
 		$id = $this->input->post("id");
 		$this->Modelo->eliminarUsuario($id);
 		$res['res'] = true;
-		echo json_encode($res);
-	}
-	function obtenerUsuario(){
-		$id = $this->input->post("id");
-		$res['res'] = $this->Modelo->obtenerUsuario($id);
 		echo json_encode($res);
 	}
 
@@ -399,6 +402,3 @@ class Principal extends CI_Controller {
 		echo json_encode($info);
 	}
 }
-
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
